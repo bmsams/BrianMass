@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\trio\_subprocess_platform\__init__.py
+# hypothesis_version: 6.148.7
+
+['linux', 'nt', 'posix', 'wait_kevent', 'win32']

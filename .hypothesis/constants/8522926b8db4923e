@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\tools\tools.py
+# hypothesis_version: 6.148.7
+
+['$ref', '^[a-zA-Z0-9_\\-]{1,}$', 'allOf', 'anyOf', 'description', 'inputSchema', 'json', 'name', 'not', 'object', 'oneOf', 'properties', 'python', 'required', 'string', 'tool name missing', 'type']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\semconv\_incubating\attributes\net_attributes.py
+# hypothesis_version: 6.148.7
+
+['inet', 'inet6', 'inproc', 'ip_tcp', 'ip_udp', 'net.host.ip', 'net.host.name', 'net.host.port', 'net.peer.ip', 'net.peer.name', 'net.peer.port', 'net.protocol.name', 'net.protocol.version', 'net.sock.family', 'net.sock.host.addr', 'net.sock.host.port', 'net.sock.peer.addr', 'net.sock.peer.name', 'net.sock.peer.port', 'net.transport', 'other', 'pipe', 'unix']

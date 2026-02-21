@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\config\config_loader.py
+# hypothesis_version: 6.148.7
+
+[600000, '.brainmass', '.mcp.json', 'ENABLE_TOOL_SEARCH', 'MCP_TIMEOUT', '\\$\\{([^}]+)\\}', 'agent_config', 'args', 'async', 'command', 'env', 'hooks', 'matcher', 'mcpServers', 'project', 'prompt', 'r', 'scope', 'settings.json', 'settings.local.json', 'timeout', 'type', 'utf-8']

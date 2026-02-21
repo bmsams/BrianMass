@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\wrapt\wrappers.py
+# hypothesis_version: 6.148.7
+
+[50790400, 'NewBase', '__annotations__', '__get__', '__qualname__', '__self__', '__set_name__', '__wrapped__', '_self_', '_self_binding', '_self_enabled', '_self_instance', '_self_owner', '_self_parent', '_self_wrapper', 'builtin', 'callable', 'class', 'classmethod', 'function', 'instancemethod', 'staticmethod']

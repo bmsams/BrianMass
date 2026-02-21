@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\docstring_parser\rest.py
+# hypothesis_version: 6.148.7
+
+['(^:.*?)(?=^:|\\Z)', '.', '.*defaults to (.+)', ':', '?', '^:', 'desc', 'returns', 'rtype', 'type', 'version', 'yields']

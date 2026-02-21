@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\agent_dispatcher.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.25, 1.0, 50000, 200000, '.', '<all>', 'agent.name', 'cache_read', 'claude-opus-4-6', 'complete', 'dispatch', 'error', 'exit_reason', 'files_modified', 'haiku', 'inherit', 'input', 'interactive', 'opus', 'output', 'register_scoped', 'sonnet', 'subagent_frontmatter', 'summary', 'tokens_consumed', 'tools_used', 'turns_used']

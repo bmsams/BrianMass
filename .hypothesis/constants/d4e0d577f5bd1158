@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\trace\span.py
+# hypothesis_version: 6.148.7
+
+[128, ',', '016x', '032x', '=', 'Span', 'SpanContext', 'TraceFlags', 'TraceState', '[ \\t]*,[ \\t]*']

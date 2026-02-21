@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\cost\quota_manager.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.8, 15.0, 100.0, 10000000, 'Quota alert: %s', 'by_agent', 'by_surface', 'cli', 'cost_usd', 'desktop', 'limit_tokens', 'mobile', 'overage_available', 'rate_limit_info', 'remaining_tokens', 'reset_at', 'sonnet', 'tokens', 'total_cost_usd', 'total_tokens', 'usage_pct', 'utilization', 'web', 'week_start', 'weekly_limit', 'weekly_rate_limit', 'weekly_tokens']

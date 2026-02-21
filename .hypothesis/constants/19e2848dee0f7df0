@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\team_manager.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.1, 0.2, 0.9, 1.0, 5.0, 50000, 200000, '.', 'ModelTier', 'blocked', 'cache_read', 'claimed', 'complete', 'error', 'exit_reason', 'files_modified', 'haiku', 'inherit', 'input', 'interactive', 'opus', 'output', 'pending', 'sonnet', 'summary', 'tokens_consumed', 'tools_used', 'turns_used']

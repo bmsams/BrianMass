@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\agent_registry.py
+# hypothesis_version: 6.148.7
+
+[2.0, '*.md', '.brainmass', 'agents', 'description', 'name', 'plugin', 'project', 'user']

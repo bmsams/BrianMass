@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Validate Agent Config",
+  "description": "When an agent JSON config is edited, validates that it follows the required schema: has name, system_prompt, skills array with valid module:function references, valid mcp_preset, and valid conversation_manager value. Checks that skill references exist in factory.py _TOOL_REGISTRY.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "agents/*.json",
+      "templates/*.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "An agent config JSON file was just edited. Validate it against the Brain Mass agent config schema: 1) Must have \"name\" (string), \"system_prompt\" (string), \"skills\" (array of \"module:function\" strings). 2) Check that skill references match entries in brain_mass/factory.py _TOOL_REGISTRY. 3) If mcp_preset is set, verify it matches a key in mcp_servers.json presets. 4) conversation_manager must be one of: \"summarizing\", \"sliding\", \"none\", or empty. 5) temperature should be 0.0-1.0. Report any issues found."
+  }
+}

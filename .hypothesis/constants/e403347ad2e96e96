@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\sdk\metrics\_internal\export\__init__.py
+# hypothesis_version: 6.148.7
+
+[1000.0, 10000, 30000, 60000, 'register_at_fork']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\plugins\plugin_registry.py
+# hypothesis_version: 6.148.7
+
+['*.md', '.brainmass-plugin', '.brainmass/plugins', '.lsp.json', '.mcp.json', '@', 'SKILL.md', 'agents', 'author', 'catalog_path', 'commands', 'description', 'homepage', 'hooks', 'license', 'local', 'lspServers', 'lsp_servers', 'marketplace.json', 'marketplaces', 'mcpServers', 'mcp_servers', 'name', 'owner_repo', 'plugin.json', 'plugins', 'repo', 'skills', 'utf-8', 'version']

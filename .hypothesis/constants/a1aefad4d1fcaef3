@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\s3transfer\utils.py
+# hypothesis_version: 6.148.7
+
+[255, 1024, 10000, 'Acquiring %s', 'ChecksumAlgorithm', 'PutObject', 'UploadPart', '_raw', 'crc32', 'on_', 'rb', 'signal_transferring', 'wb']

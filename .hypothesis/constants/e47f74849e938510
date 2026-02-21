@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\semconv\attributes\network_attributes.py
+# hypothesis_version: 6.148.7
+
+['ipv4', 'ipv6', 'network.local.port', 'network.peer.address', 'network.peer.port', 'network.transport', 'network.type', 'pipe', 'quic', 'tcp', 'udp', 'unix']

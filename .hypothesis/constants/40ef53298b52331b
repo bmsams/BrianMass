@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\toml\encoder.py
+# hypothesis_version: 6.148.7
+
+[' \t\n\r,', ' = ', ' }\n', '"', '%r', "'", '+00:00', ',', ', ', '.', 'Z', '[', '[[', '\\', '\\"', "\\'", '\\\\', '\\x', ']', ']\n', ']]\n', '^[A-Za-z0-9_-]+$', '__iter__', 'decode', 'e+', 'e+0', 'e-', 'e-0', 'u', 'u00', 'utf-8', 'x', '{ ', '{}']

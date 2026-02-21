@@ -1,0 +1,13 @@
+{
+  "name": "Frontend File Steering",
+  "version": "1.0.0",
+  "description": "Activates frontend design steering when frontend files are edited",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["*.html", "*.css", "*.scss", "*.tsx", "*.jsx", "*.vue", "*.svelte", "*.astro"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A frontend file was just edited. Ensure the frontend design steering is active: use distinctive typography (never Inter/Roboto/Arial), commit to a cohesive color theme with CSS variables, add purposeful motion at high-impact moments, and create atmospheric backgrounds. Avoid generic AI aesthetics."
+  }
+}

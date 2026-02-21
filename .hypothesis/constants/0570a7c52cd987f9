@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\yaml\resolver.py
+# hypothesis_version: 6.148.7
+
+['!&*', '-+0123456789', '-+0123456789.', '0123456789', '<', '=', 'BaseResolver', 'N', 'Resolver', '^(?:!|&|\\*)$', '^(?:<<)$', '^(?:=)$', 'n', 'yYnNtTfFoO', 'yaml_path_resolvers', '~']

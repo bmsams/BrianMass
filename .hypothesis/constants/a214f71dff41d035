@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\boto3\compat.py
+# hypothesis_version: 6.148.7
+
+['.*boto3\\.compat', 'April 29, 2026', 'UNSET_DEFAULT', 'a', 'blog_link', 'date', 'ignore', 'mode', 'win']

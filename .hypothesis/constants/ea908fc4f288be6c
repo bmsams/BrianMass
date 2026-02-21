@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\tools\structured_output\structured_output_tool.py
+# hypothesis_version: 6.148.7
+
+[' -> ', 'StructuredOutputTool', 'content', 'description', 'error', 'input', 'loc', 'name', 'root', 'status', 'structured_output', 'success', 'text', 'toolUseId']

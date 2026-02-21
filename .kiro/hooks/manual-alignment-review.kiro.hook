@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Run Alignment Review",
+  "description": "Manually triggered alignment review that checks the latest changes against project requirements, design docs, and architectural patterns.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run a full alignment review. Read docs/brain_mass_design.md and docs/executive_summary.md for design intent. Check git status and diff. Verify: 1) All new code is wired into app.py/factory.py. 2) Tool registry is complete. 3) Agent configs reference valid skills. 4) No duplicated logic. 5) No scope creep. 6) requirements.txt is current. Produce a verdict: ALIGNED / NEEDS ATTENTION / OFF TRACK with specific findings."
+  }
+}

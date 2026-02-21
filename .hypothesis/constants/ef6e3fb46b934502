@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\_pytest\hookspec.py
+# hypothesis_version: 6.148.7
+
+['collect', 'collection_path', 'config', 'file_path', 'module_path', 'path', 'pytest', 'runtest', 'start_path', 'startdir']

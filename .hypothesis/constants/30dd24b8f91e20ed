@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\agent_loader.py
+# hypothesis_version: 6.148.7
+
+[b'\xef\xbb\xbf', ',', '<string>', '^[a-z][a-z0-9-]*$', 'blue', 'bypassPermissions', 'calculator', 'claude-opus-4-6', 'color', 'current_time', 'cyan', 'default', 'description', 'disallowedTools', 'editor', 'environment', 'file_metadata', 'file_read', 'file_write', 'green', 'haiku', 'hooks', 'inherit', 'matcher', 'maxTurns', 'mcpServers', 'memory', 'model', 'name', 'opus', 'orange', 'permissionMode', 'plan', 'project', 'purple', 'red', 'skills', 'sonnet', 'tools', 'utf-8', '\ufeff']

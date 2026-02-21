@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\_strands_utils.py
+# hypothesis_version: 6.148.7
+
+['cache_read', 'cache_read_tokens', 'claude-opus-4-6', 'complete', 'content', 'end_turn', 'exit_reason', 'file_path', 'files_modified', 'haiku', 'inherit', 'input', 'input_tokens', 'name', 'opus', 'output', 'output_tokens', 'sonnet', 'stop_reason', 'summary', 'text', 'tokens_consumed', 'tool_use', 'tools_used', 'turns', 'turns_used', 'type', 'unknown', 'usage']

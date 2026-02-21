@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\mcp\server_mode.py
+# hypothesis_version: 6.148.7
+
+[-32601, -32000, '*', '**/*', '.', '2.0', 'Applied one edit', 'Bash', 'Edit', 'GlobTool', 'GrepTool', 'LS', 'Read', 'Replace', 'Write', 'arguments', 'brainmass-mcp', 'capabilities', 'capabilities/get', 'code', 'command', 'command is required', 'content', 'description', 'error', 'id', 'initialize', 'inputSchema', 'isError', 'jsonrpc', 'message', 'method', 'name', 'new', 'no_mcp_passthrough', 'object', 'ok', 'old', 'old text not found', 'params', 'path', 'pattern', 'pattern is required', 'protocol', 'result', 'root', 'server', 'shutdown', 'stdio', 'text', 'timeout', 'tools', 'tools/call', 'tools/list', 'type', 'utf-8']

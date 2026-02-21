@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\evals\eval_suite.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.05, 0.1, 0.15, 0.2, 0.5, 0.95, 1.0, 2.0, 3.0, 4.0, 5.0, 20.0, 85.0, 90.0, 95.0, 100.0, 30000.0, 'Code Quality', 'Context Preservation', 'Cost Efficiency', 'Latency (p95)', 'Learning Retention', 'No description', 'PRESERVE_VERBATIM', 'Safety', 'Task Completion', 'actual', 'actual_cost', 'category', 'code_samples', 'completed', 'content', 'context_after', 'context_before', 'count', 'critical', 'description', 'details', 'dimensions', 'durations_ms', 'expected_cost', 'fail_count', 'id', 'iterations', 'over', 'overall_pass', 'overhead_ms', 'pass_count', 'passed', 'percentage', 'ratio', 'response', 'role', 'safety_findings', 'score', 'severity', 'target', 'task_results', 'time', 'timestamp', 'total_dimensions', 'total_ms', 'under', 'variance', 'weighted_score']

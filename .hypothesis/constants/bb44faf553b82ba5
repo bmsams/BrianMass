@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\loop_runner.py
+# hypothesis_version: 6.148.7
+
+[0.5, 5.0, 200, 50000, 200000, '# Constraints', '.', '?', 'acceptance_met', 'approach', 'cache_read', 'complete', 'confidence', 'exit_reason', 'files_modified', 'haiku', 'inherit', 'input', 'interactive', 'iteration', 'iteration_count', 'learnings', 'loop_acceptance', 'loop_iteration', 'loop_stop_file', 'max_iterations', 'opus', 'output', 'pattern', 'resolution', 'sonnet', 'source_iteration', 'stop_file', 'summary', 'tokens_consumed', 'tools_used', 'turns_used', 'why_failed']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\instrumentation\instrumentor.py
+# hypothesis_version: 6.148.7
+
+['BaseInstrumentor', 'skip_dep_check']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\bedrock_agentcore\memory\controlplane.py
+# hypothesis_version: 6.148.7
+
+[100, 300, 'Code', 'Created memory: %s', 'Error', 'Memory %s status: %s', 'Unknown', 'Updated memory: %s', 'addMemoryStrategies', 'clientToken', 'configuration', 'description', 'eventExpiryDuration', 'failureReason', 'id', 'maxResults', 'memories', 'memory', 'memoryId', 'memoryStrategies', 'memoryStrategyId', 'name', 'namespaces', 'nextToken', 'prod', 'status', 'strategies', 'strategyCount', 'strategyId', 'us-west-2']

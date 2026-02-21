@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Validate MCP Config",
+  "description": "When mcp_servers.json is edited, validates server definitions have required fields and presets reference existing servers.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "mcp_servers.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The MCP server config was just edited. Validate: 1) Each server in \"servers\" has either command+args (stdio) or url (http) and a transport field. 2) All server names referenced in \"presets\" actually exist in \"servers\". 3) No duplicate server names. 4) env values are strings. Report any issues."
+  }
+}

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\botocore\__init__.py
+# hypothesis_version: 6.148.7
+
+['(.)([A-Z][a-z]+)', '([a-z0-9])([A-Z])', '-', '1.42.19', 'ExecutePartiQLBatch', 'SendWhatsAppMessage', '[A-Z]{2,}s$', '\\1', '\\2', '_', 'boolean', 'botocore', 'double', 'float', 'integer', 'string', 'timestamp']

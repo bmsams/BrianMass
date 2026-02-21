@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\bedrock_agentcore\memory\session.py
+# hypothesis_version: 6.148.7
+
+[100, 1000, '  ✅ Found %d actors.', 'AWS_REGION', 'Actor', 'MemorySession', 'actorId', 'actorSummaries', 'bedrock-agentcore', 'blob', 'branch', 'content', 'conversational', 'create_event', 'created', 'delete_event', 'delete_memory_record', 'event', 'eventCount', 'eventId', 'eventMetadata', 'eventTimestamp', 'events', 'failedRecords', 'filter', 'firstEventId', 'get_event', 'get_memory_record', 'includePayloads', 'list_actors', 'list_events', 'list_memory_records', 'list_sessions', 'main', 'maxResults', 'memoryId', 'memoryRecord', 'memoryRecordId', 'memoryRecords', 'memoryStrategyId', 'metadata', 'name', 'namespace', 'nextToken', 'payload', 'relevanceScore', 'role', 'rootEventId', 'searchCriteria', 'searchQuery', 'sessionId', 'sessionSummaries', 'strategyId', 'successfulRecords', 'text', 'topK', 'us-west-2', 'user_agent_extra']

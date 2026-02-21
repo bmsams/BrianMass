@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\tools\structured_output\structured_output_utils.py
+# hypothesis_version: 6.148.7
+
+['$defs', '$ref', '/', '__args__', '__origin__', 'anyOf', 'description', 'items', 'json', 'null', 'object', 'properties', 'required', 'title', 'type']

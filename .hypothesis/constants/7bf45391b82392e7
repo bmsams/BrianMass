@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\security\data_classifier.py
+# hypothesis_version: 6.148.7
+
+[0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0, '(?i)\\bbrainmass\\b', '*', '; ', 'BRAINMASS_NESTED', 'BRAINMASS_SESSION_ID', 'api_key', 'aws_key', 'bank_account', 'blocked', 'category', 'classifications', 'confidence', 'credentials', 'credit_card', 'currency_amount', 'diagnosis', 'email', 'end', 'filtered_content', 'financial', 'generic_secret', 'guardrail_id', 'guardrail_version', 'harmful_synthesis', 'health_term', 'icd_code', 'luhn', 'malware_exploit', 'name', 'nested', 'password', 'phi', 'phone', 'pii', 'private_key', 'reason', 'safe', 'social_engineering', 'ssn', 'start', 'subcategory', 'token', 'violations', 'weaponization']

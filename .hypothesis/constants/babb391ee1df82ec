@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\runtime\config.py
+# hypothesis_version: 6.148.7
+
+[', ', '0', '1', 'AGENTCORE_APP_NAME', 'AWS_REGION', 'BRAINMASS_LOCAL_DEV', 'ENABLE_TOOL_SEARCH', 'MODEL_ID_HAIKU', 'MODEL_ID_OPUS', 'MODEL_ID_SONNET', 'auto', 'brainmass-sessions', 'brainmass-v3', 'us-east-1']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\bedrock_agentcore\memory\constants.py
+# hypothesis_version: 6.148.7
+
+[0.0, 1.0, 100, 'ACTIVE', 'ASSISTANT', 'CREATING', 'CUSTOM', 'DELETING', 'EPISODIC', 'EPISODIC_OVERRIDE', 'FAILED', 'OTHER', 'SEMANTIC', 'SEMANTIC_OVERRIDE', 'SUMMARIZATION', 'SUMMARY_OVERRIDE', 'TOOL', 'UPDATING', 'USER', 'USER_PREFERENCE', 'customMemoryStrategy']

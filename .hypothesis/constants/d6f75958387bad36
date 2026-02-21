@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\s3transfer\upload.py
+# hypothesis_version: 6.148.7
+
+[256, 1024, 'Checksum', 'ChecksumAlgorithm', 'ChecksumType', 'ETag', 'ExpectedBucketOwner', 'FULL_OBJECT', 'MpuObjectSize', 'PartNumber', 'RequestPayer', 'SSECustomerAlgorithm', 'SSECustomerKey', 'SSECustomerKeyMD5', 'bucket', 'client', 'extra_args', 'fileobj', 'full_file_size', 'key', 'part_number', 'part_size', 'parts', 'progress', 'put_object', 'start_byte', 'upload_id', 'upload_part']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\types\_events.py
+# hypothesis_version: 6.148.7
+
+['AgentResult', 'EventLoopMetrics', 'MultiAgentResult', 'NodeResult', 'callback', 'citation', 'current_tool_use', 'data', 'delta', 'event', 'force_stop', 'force_stop_reason', 'from_node_ids', 'init_event_loop', 'interrupts', 'message', 'multiagent_handoff', 'multiagent_node_stop', 'multiagent_result', 'node_id', 'node_result', 'node_type', 'reasoning', 'reasoningText', 'reasoning_signature', 'result', 'start', 'start_event_loop', 'stop', 'structured_output', 'to_node_ids', 'toolUseId', 'tool_cancel_event', 'tool_interrupt_event', 'tool_result', 'tool_stream', 'tool_stream_event', 'tool_use', 'tool_use_stream', 'type']

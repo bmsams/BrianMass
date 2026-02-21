@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\trio\socket.py
+# hypothesis_version: 6.148.7
+
+['SO_REUSEADDR', 'cpython', 'linux', 'win32']

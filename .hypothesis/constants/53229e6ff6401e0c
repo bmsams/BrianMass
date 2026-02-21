@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\semconv\_incubating\attributes\http_attributes.py
+# hypothesis_version: 6.148.7
+
+['1.0', '1.1', '2.0', '3.0', 'CONNECT', 'DELETE', 'GET', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT', 'QUERY', 'QUIC', 'SPDY', 'TRACE', '_OTHER', 'active', 'http.client_ip', 'http.flavor', 'http.host', 'http.method', 'http.request.header', 'http.request.method', 'http.request.size', 'http.response.header', 'http.response.size', 'http.route', 'http.scheme', 'http.server_name', 'http.status_code', 'http.target', 'http.url', 'http.user_agent', 'idle']

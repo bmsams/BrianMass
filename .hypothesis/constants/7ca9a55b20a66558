@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\cost\cost_governor.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.5, 1.0, 50000, 200000, 1000000, 'cache_hit_rates', 'cost_per_agent', 'token_consumption', 'total_cached_tokens', 'total_input_tokens', 'total_output_tokens']

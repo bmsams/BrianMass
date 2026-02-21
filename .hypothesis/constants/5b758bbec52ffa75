@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\safety_controls.py
+# hypothesis_version: 6.148.7
+
+[500, '.', '.auto', '/', 'DiffSizeChecker: %s', 'ErrorMonitor: %s', '\\', 'stop']

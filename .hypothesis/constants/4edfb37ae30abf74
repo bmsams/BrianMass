@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\builtin_templates.py
+# hypothesis_version: 6.148.7
+
+[100, 120, 'Bash', 'Edit', 'Glob', 'Grep', 'MultiEdit', 'Read', 'Write', 'adr', 'architect', 'blue', 'cli', 'code-reviewer', 'cyan', 'enabled', 'github', 'green', 'haiku', 'implementer-tester', 'opus', 'owasp', 'plan', 'purple', 'red', 'researcher', 'security-auditor', 'sonnet']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\xdist\__init__.py
+# hypothesis_version: 6.148.7
+
+['__version__', 'get_xdist_worker_id', 'is_xdist_controller', 'is_xdist_master', 'is_xdist_worker']

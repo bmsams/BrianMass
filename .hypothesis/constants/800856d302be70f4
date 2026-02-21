@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\bedrock_agentcore\runtime\agent_core_runtime_client.py
+# hypothesis_version: 6.148.7
+
+[300, '%Y%m%dT%H%M%SZ', '/', '13', ':', 'Authorization', 'Connection', 'GET', 'Host', 'Sec-WebSocket-Key', 'Upgrade', 'User-Agent', 'X-Amz-Date', 'X-Amz-Security-Token', 'account_id', 'arn', 'aws', 'bedrock-agentcore', 'host', 'https://', 'qualifier', 'region', 'runtime/', 'runtime_id', 'websocket', 'wss://', 'x-amz-date']

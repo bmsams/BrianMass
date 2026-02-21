@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Post-Task Alignment Review",
+  "description": "Automatically runs the alignment reviewer after agent task completion. Reviews the latest changes against project requirements and design docs, checks that new code is fully wired into the app, audits for reuse of common components, and ensures the project stays on target. Produces a scored report with actionable findings.",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "An agent task just completed. Run a post-task alignment review by examining the latest git changes against the project's requirements and design documents. Check that: 1) All new code is fully wired into the application (imports, registrations, configs), 2) Existing shared components and patterns are reused instead of duplicated, 3) The changes align with the project's design intent and architectural patterns, 4) There is no scope creep or design drift, 5) Nothing is left partially implemented or orphaned. Read the project's design docs, config files, and entry points to understand the big picture. Use git_diff and git_status to see what changed. Produce a concise alignment report with a verdict (ALIGNED / NEEDS ATTENTION / OFF TRACK), specific findings, and prioritized action items."
+  }
+}

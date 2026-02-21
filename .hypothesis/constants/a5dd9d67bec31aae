@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\packaging\utils.py
+# hypothesis_version: 6.148.7
+
+['(\\d+)(.*)', '-', '.tar.gz', '.whl', '.zip', 'NormalizedName', '[-_.]+', '^[\\w\\d._]*$', '__']

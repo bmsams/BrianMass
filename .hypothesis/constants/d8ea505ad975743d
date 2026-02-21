@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\context\context_manager.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.3, 1.0, 5.0, 83.5, 85.0, 100.0, 200000, 500000, ' [... compacted]', '.', '.brainmass', '1', 'brainmass', 'category', 'confidence', 'content', 'context_compaction', 'create_event', 'create_memory', 'create_or_get_memory', 'created_at', 'event_id', 'fresh', 'id', 'interactive', 'items', 'last_referenced_at', 'learning-store', 'memoryId', 'memory_id', 'name', 'namespace', 'pattern', 'query', 'reference_count', 'resolution', 'retrieve_memories', 'saved_at', 'session-state.json', 'session_id', 'source', 'stale', 'staleness_score', 'system', 'token_count', 'tool_call', 'tool_result', 'user', 'utf-8', 'value', 'warm']

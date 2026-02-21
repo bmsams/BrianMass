@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\frontmatter\default_handlers.py
+# hypothesis_version: 6.148.7
+
+['+++', '---', 'BaseHandler', 'Dumper', 'JSONHandler', 'Loader', 'TOMLHandler', 'YAMLHandler', '^(?:{|})$', '^-{3,}\\s*$', '^\\+{3,}\\s*$', 'allow_unicode', 'default_flow_style', 'end_delimiter', 'indent', 'start_delimiter', '{', '}']

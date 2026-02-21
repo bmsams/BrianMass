@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\telemetry\config.py
+# hypothesis_version: 6.148.7
+
+['Initializing meter', 'Initializing tracer', 'StrandsTelemetry', 'opentelemetry', 'python', 'service.name', 'service.version', 'strands-agents', 'telemetry.sdk.name']

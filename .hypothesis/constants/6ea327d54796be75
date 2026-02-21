@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\subagent_manager.py
+# hypothesis_version: 6.148.7
+
+[0.25, 1.0, 50000, 200000, '.', 'ModelTier', 'cache_read', 'complete', 'description', 'error', 'exit_reason', 'files_modified', 'haiku', 'inherit', 'input', 'interactive', 'name', 'opus', 'output', 'sonnet', 'subagent_frontmatter', 'summary', 'tokens_consumed', 'tools_used', 'turns_used']

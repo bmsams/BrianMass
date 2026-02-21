@@ -1,0 +1,13 @@
+{
+  "name": "Frontend Design Review",
+  "version": "1.0.0",
+  "description": "Reviews frontend file writes for generic AI aesthetics and suggests distinctive alternatives",
+  "when": {
+    "type": "postToolUse",
+    "toolTypes": ["write"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file was just written by the {tool} tool. If it is a frontend file (.html, .css, .scss, .tsx, .jsx, .vue, .svelte, .astro), quickly review the output for generic AI aesthetics: Inter/Roboto fonts, purple gradients on white, predictable centered layouts, default Tailwind spacing, cookie-cutter card components. If any are detected, note them briefly so the agent can fix them in the next iteration. If the file is not a frontend file, do nothing."
+  }
+}

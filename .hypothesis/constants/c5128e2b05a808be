@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\tools\executors\_executor.py
+# hypothesis_version: 6.148.7
+
+['Agent', 'Agent | BidiAgent', 'BidiAgent', 'agent', 'auto', 'cancel_message', 'content', 'description', 'error', 'exception', 'inputSchema', 'invocation_state', 'json', 'messages', 'model', 'name', 'result', 'selected_tool', 'status', 'success', 'system_prompt', 'text', 'toolResult', 'toolSpec', 'toolUseId', 'tool_config', 'tool_use', 'user']

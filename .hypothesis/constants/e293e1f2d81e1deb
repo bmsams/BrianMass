@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\agents\compound_loop.py
+# hypothesis_version: 6.148.7
+
+[10.0, 50000, 200000, '.', 'acceptance_criteria', 'acceptance_met', 'agent_def_path', 'cache_read', 'complete', 'constraints', 'current_stage', 'description', 'error', 'exit_reason', 'files_modified', 'input', 'input_mapping', 'interactive', 'max_iterations', 'name', 'output', 'output_mapping', 'pipeline_name', 'result', 'sonnet', 'stage_failed', 'stage_outputs', 'stage_statuses', 'stages', 'started_at', 'summary', 'tokens_consumed', 'tools_used', 'turns_used', 'updated_at', 'utf-8', 'w']

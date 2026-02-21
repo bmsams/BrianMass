@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\watchdog\events.py
+# hypothesis_version: 6.148.7
+
+['.*', 'Closed read file: %s', 'Created %s: %s', 'Deleted %s: %s', 'Modified %s: %s', 'Opened file: %s', 'closed', 'closed_no_write', 'created', 'deleted', 'dest_path', 'directory', 'file', 'modified', 'moved', 'opened']

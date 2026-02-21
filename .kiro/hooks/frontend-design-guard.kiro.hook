@@ -1,0 +1,13 @@
+{
+  "name": "Frontend Design Guard",
+  "version": "1.0.0",
+  "description": "Pre-write check: reminds agent to apply frontend design principles before writing frontend files",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": ["write"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before writing, if this is a frontend file (.html, .css, .scss, .tsx, .jsx, .vue, .svelte, .astro), ensure you are applying the frontend design skill: distinctive typography (not Inter/Roboto/Arial), cohesive color theme via CSS variables, purposeful CSS animations, atmospheric backgrounds, and asymmetric layouts. Do NOT use generic AI aesthetics. If this is not a frontend file, proceed normally."
+  }
+}

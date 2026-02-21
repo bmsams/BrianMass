@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\agent\agent.py
+# hypothesis_version: 6.148.7
+
+['Strands Agents', 'T', 'ToolProvider', 'agent', 'callback_handler', 'config', 'content', 'default', 'error', 'gen_ai.agent.id', 'gen_ai.agent.name', 'gen_ai.choice', 'gen_ai.system', 'invocation_state', 'message', 'model_id', 'output', 'redactContent', 'response', 'result', 'role', 'span', 'stop', 'strands-agents', 'system', 'text', 'toolResult', 'toolUse', 'toolUseId', 'tool_registry', 'user']

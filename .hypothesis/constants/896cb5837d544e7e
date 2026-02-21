@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\hooks\handlers\prompt.py
+# hypothesis_version: 6.148.7
+
+['$ARGUMENTS', '```', '```json', 'additionalContext', 'allow', 'block', 'continue', 'decision', 'deny', 'hook_event_name', 'permissionDecision', 'reason', 'updatedInput', 'value']

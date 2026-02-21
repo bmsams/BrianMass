@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\cache\cache_manager.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.7, 300, 3600, 'brainmass_md', 'cache_control', 'cache_layer', 'conversation_history', 'current_diff', 'ephemeral', 'input_tokens', 'policy_definitions', 'skill_instructions', 'system_prompt', 'tool_schemas', 'ttl', 'type']

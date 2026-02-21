@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\config\enterprise.py
+# hypothesis_version: 6.148.7
+
+[0.0, '.brainmass', 'Git sync failed: %s', 'allowed', 'allowed_models', 'allowed_models_count', 'audit_log_endpoint', 'blocked_tools', 'blocked_tools_count', 'capped', 'current_cost_usd', 'effective_budget_usd', 'enterprise.json', 'enterprise_managed', 'git_config_repo', 'git_config_repo_url', 'hooks', 'loaded', 'managed_hooks_only', 'max_team_budget_usd', 'plugin', 'project_local', 'project_shared', 'r', 'reason', 'required_skills', 'session_budget_cap', 'skill_frontmatter', 'subagent_frontmatter', 'team_budget_cap', 'user_wide', 'utf-8', 'valid', 'violations']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\session\teleporter.py
+# hypothesis_version: 6.148.7
+
+['1.0', 'Session teleported', 'active_workers', 'cli', 'compaction_state', 'conflict', 'conversation_history', 'cost_tracking', 'desktop', 'field', 'from_surface', 'hook_registrations', 'mobile', 'pending_approvals', 'schema_version', 'serialized_at', 'session_key', 'session_state', 'state', 'surface', 'target_surface', 'timestamp', 'to_surface', 'tool_permissions', 'trace_id', 'utf-8', 'web', 'worker_count']

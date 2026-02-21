@@ -1,0 +1,503 @@
+# Implementation Plan: Brainmass v3 Enterprise System
+
+## Overview
+
+Implementation of the Brainmass v3 Enterprise System using Python (Strands Agents SDK) with Amazon
+Bedrock AgentCore for production hosting. Tasks are ordered by dependency. Testing uses pytest for
+unit tests and Hypothesis for property-based tests.
+
+## Tasks
+
+- [x] 1. Project scaffold and core types
+  - [x] 1.1 Create project directory structure (src/, tests/, evals/) and install dependencies
+    - Create pyproject.toml with all dependencies (strands-agents, strands-agents-tools, bedrock-agentcore, python-frontmatter, hypothesis)
+    - Create src/ subdirectories: types/, config/, context/, orchestrator/, hooks/, agents/, cost/, cache/, plugins/, skills/, session/, observability/, security/, mcp/
+    - _Requirements: 1.1, 26.1_
+  - [x] 1.2 Implement core type definitions in src/types/core.py
+    - Define enums: ModelTier, EffortLevel, ContextCategory, HookEvent, HookHandlerType, BudgetStatus, TopologyType
+    - Define dataclasses: ContextItem, ContextHealthMetrics, AgentBudget, HookHandler, HookDefinition, HookContext, HookResult, AgentDefinition, AgentResult, TeamTask, MailboxMessage, LoopContext, Learning, PluginManifest, SkillDefinition, ModelPricing, McpServerConfig, SessionState
+    - Define PRICING constants for all model tiers
+    - _Requirements: 1.4, 4.6, 28.1_
+  - [x] 1.3 Implement configuration loader in src/config/
+    - Load settings from 3 scopes: user (~/.brainmass/settings.json), project (.brainmass/settings.json), project-local (.brainmass/settings.local.json)
+    - Implement precedence merging (local > project > user)
+    - Parse hooks, feature flags, env overrides from settings.json
+    - Parse .mcp.json for MCP server configuration with ${ENV_VAR} substitution
+    - _Requirements: 19.1, 19.2, 19.3_
+  - [x]* 1.4 Write unit tests for configuration loader
+    - Test 3-scope merging with correct precedence
+    - Test env variable substitution in .mcp.json
+    - _Requirements: 19.1_
+
+
+- [x] 2. Context Manager with semantic triage
+  - [x] 2.1 Implement semantic triage classifier in src/context/triage.py
+    - Define VERBATIM_PATTERNS (stack traces, exit codes, file paths, declarations, test output, version numbers, env variables)
+    - Define STRUCTURED_PATTERNS (decision records, acceptance criteria, schemas)
+    - Implement classify() function that matches patterns and returns ContextCategory
+    - _Requirements: 2.1, 2.2_
+  - [x]* 2.2 Write property test for context classification
+    - **Property 1: Context classification is exhaustive and exclusive**
+    - **Validates: Requirements 2.1**
+  - [x] 2.3 Implement Context Manager in src/context/context_manager.py
+    - Extend Strands SummarizingConversationManager with semantic triage
+    - Implement session file persistence at .brainmass/session-state.json
+    - Implement staleness scoring: score = (turns_since_ref) * (1 / reference_count)
+    - Implement compaction with threshold adaptation (83.5% for 200K, 85% for 1M)
+    - Implement context editing (clear stale tool call results)
+    - Expose context health metrics (freePercent, totalTokens, preservedTokens, etc.)
+    - Integrate with AgentCore MemoryClient for long-term storage via memory_callback
+    - _Requirements: 2.3, 2.4, 2.5, 2.7, 2.8, 2.9, 2.10, 2.12_
+  - [x]* 2.4 Write property tests for context manager
+    - **Property 2: PRESERVE_VERBATIM items survive compaction**
+    - **Validates: Requirements 2.4, 2.5, 2.11**
+    - **Property 3: Staleness score correctness**
+    - **Validates: Requirements 2.7**
+    - **Property 4: Context health metrics consistency**
+    - **Validates: Requirements 2.8**
+
+- [x] 3. Hook lifecycle engine
+  - [x] 3.1 Implement Hook Engine in src/hooks/hook_engine.py
+    - Extend Strands HookProvider with register_hooks(registry: HookRegistry)
+    - Map BeforeToolCallEvent → PreToolUse, AfterToolCallEvent → PostToolUse
+    - Implement fire() for all 12 custom events
+    - Implement scoped registration with cleanup functions
+    - Implement 7-scope precedence resolution (enterprise_managed → plugin → subagent_frontmatter → skill_frontmatter → project_local → project_shared → user_wide)
+    - _Requirements: 3.1, 3.3_
+  - [x] 3.2 Implement command handler in src/hooks/handlers/command.py
+    - Spawn child process, pipe HookContext as JSON to stdin
+    - Read stdout as JSON HookResult, handle exit codes (0=allow, 2=deny)
+    - Implement 10-minute timeout, async mode support
+    - _Requirements: 3.2, 3.7_
+  - [x] 3.3 Implement prompt handler in src/hooks/handlers/prompt.py
+    - Send prompt to Haiku model via Strands Agent with $ARGUMENTS replacement
+    - Parse structured response as HookResult
+    - _Requirements: 3.2_
+  - [x] 3.4 Implement agent handler in src/hooks/handlers/agent.py
+    - Spawn Strands Agent with Read, Grep, Glob tools
+    - Collect structured response as HookResult
+    - _Requirements: 3.2_
+  - [x] 3.5 Implement PreToolUse input modification in src/hooks/pre_tool_use.py
+    - Support allow, deny, and modify input (updatedInput + additionalContext)
+    - Ensure modification is transparent to the model
+    - _Requirements: 3.4_
+  - [x]* 3.6 Write property tests for hook engine
+    - **Property 5: Hook matcher regex correctness**
+    - **Validates: Requirements 3.8**
+    - **Property 6: PreToolUse allow/deny/modify**
+    - **Validates: Requirements 3.4**
+    - **Property 7: Async hooks do not block execution**
+    - **Validates: Requirements 3.7**
+
+- [x] 4. Checkpoint — Phase 1 foundation complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 5. Cost Governor
+  - [x] 5.1 Implement Cost Governor in src/cost/cost_governor.py
+    - Implement model selection based on TaskSignals (isExploration, filesAffected, requiresReasoning, isTeamLead, dependencyDepth)
+    - Implement cost calculation using pricing formula with all model tiers
+    - Implement budget tracking with 4 parameters (input_budget_tokens, output_budget_tokens, session_budget_usd, team_budget_usd)
+    - Implement budget status thresholds (OK/WARNING/CRITICAL/EXCEEDED at 0/80/95/100%)
+    - Implement model downgrade at WARNING, pause at CRITICAL
+    - Implement real-time dashboard data (token consumption, cost per agent, model tier distribution, cache hit rates)
+    - Wrap Strands BedrockModel instances for each tier behind pluggable model_callback
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8_
+  - [x]* 5.2 Write property tests for cost governor
+    - **Property 8: Cost calculation correctness**
+    - **Validates: Requirements 4.6, 1.5**
+    - **Property 9: Budget status thresholds**
+    - **Validates: Requirements 4.2, 4.3**
+    - **Property 10: Model selection from TaskSignals**
+    - **Validates: Requirements 4.5**
+
+- [x] 6. Core Orchestrator
+  - [x] 6.1 Implement Orchestrator in src/orchestrator/orchestrator.py
+    - Create Strands Agent with BedrockModel, system prompt, and tools via agent_callback
+    - Implement 8-step process_request flow (SessionStart → UserPromptSubmit → classify → select model → decompose → execute with hooks → update context → Stop)
+    - Implement topology selection (hierarchical/team/loop) based on task characteristics
+    - Wire Context Manager, Hook Engine, Cost Governor, Effort Controller
+    - _Requirements: 1.2, 1.3, 1.6_
+  - [x] 6.2 Implement Effort Controller in src/orchestrator/effort_controller.py
+    - Implement Quick/Standard/Deep selection based on task signals, model capability, budget
+    - Map effort levels to budget_tokens (2000/10000/50000+)
+    - Support Fast Mode for Opus 4.6 with OTel speed attribute
+    - _Requirements: 12.1, 12.2, 12.3, 12.4_
+  - [x]* 6.3 Write property test for effort controller
+    - **Property 19: Effort level selection**
+    - **Validates: Requirements 12.1, 12.2**
+
+- [x] 7. Checkpoint — Core control plane complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+
+- [x] 8. Hierarchical subagent manager
+  - [x] 8.1 Implement subagent manager in src/agents/subagent_manager.py
+    - Implement Agents-as-Tools pattern using Agent.as_tool() and @tool decorator via agent_callback
+    - Create independent context windows per subagent with own budget and hook scope
+    - Fire SubagentStop hooks on completion
+    - Return structured AgentResult to parent
+    - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
+
+- [x] 9. Agent Teams manager
+  - [x] 9.1 Implement Team Manager in src/agents/team_manager.py
+    - Spawn Team Lead + N Teammates using Strands Swarm via agent_callback
+    - Implement shared task list with status tracking (pending/claimed/blocked/complete) and dependency declarations
+    - Implement file ownership mapping
+    - _Requirements: 6.1, 6.3, 6.6, 6.9_
+  - [x] 9.2 Implement file-lock protocol in src/agents/file_lock.py
+    - Check .brainmass/locks/{filepath}.lock existence
+    - Create lock with teammate ID and timestamp
+    - Break stale locks (>5 minutes)
+    - Release all locks on task completion
+    - _Requirements: 6.4_
+  - [x] 9.3 Implement mailbox IPC in src/agents/mailbox.py
+    - File-system-based message queue with inbox directories per teammate
+    - JSON messages with sender, recipient, type (task_assignment/finding/question/status_update), payload
+    - Team lead broadcast capability
+    - _Requirements: 6.2, 6.5_
+  - [x]* 9.4 Write property test for file-lock protocol
+    - **Property 11: File-lock mutual exclusion**
+    - **Validates: Requirements 6.4**
+
+- [x] 10. Self-improving loop runner
+  - [x] 10.1 Implement Loop Runner in src/agents/loop_runner.py
+    - Implement Ralph Wiggum pattern: fresh agent per iteration with clean context via agent_callback
+    - Feed structured context file, execute task, commit to git, update learnings
+    - Implement via Strands GraphBuilder with conditional edges
+    - _Requirements: 7.1, 7.3, 7.4, 7.7_
+  - [x] 10.2 Implement context file management in src/agents/context_file.py
+    - Manage .brainmass/loop-context.json with all required fields
+    - Serialize/deserialize LoopContext objects
+    - _Requirements: 7.2_
+  - [x] 10.3 Implement safety controls in src/agents/safety_controls.py
+    - Live log monitoring (auto-pause on 3+ same errors)
+    - Diff size limits (abort on oversized diffs or out-of-scope files)
+    - Stop file (.auto/stop sentinel check at iteration boundary)
+    - Acceptance criteria gate
+    - _Requirements: 7.5_
+  - [x]* 10.4 Write property tests for loop runner
+    - **Property 12: Loop iteration context isolation**
+    - **Validates: Requirements 7.1**
+    - **Property 13: Loop context file round-trip**
+    - **Validates: Requirements 7.2**
+
+- [x] 11. Checkpoint — Multi-agent topologies complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 12. Prompt cache manager
+  - [x] 12.1 Implement Cache Manager in src/cache/cache_manager.py
+    - Identify cache-stable layers (system prompts, BRAINMASS.md, tool schemas, policy definitions, skill instructions)
+    - Inject cache_control blocks into API requests (1-hour for stable, 5-minute for semi-stable)
+    - Track cache hit rates, alert if below 70%
+    - Support both 5-minute and 1-hour durations
+    - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5_
+  - [x]* 12.2 Write property test for cache manager
+    - **Property 20: Cache layer duration assignment**
+    - **Validates: Requirements 11.1**
+
+- [x] 13. MCP Tool Search integration
+  - [x] 13.1 Implement Tool Search in src/orchestrator/tool_search.py
+    - Switch to lazy loading when tool definitions exceed context threshold
+    - Use tool_reference blocks for Sonnet 4+ and Opus 4+
+    - Haiku fallback: eager loading (no search support)
+    - Track context savings
+    - _Requirements: 9.6_
+
+- [x] 14. Skills Registry
+  - [x] 14.1 Implement Skill Registry in src/skills/skill_registry.py
+    - Discover skills from ~/.brainmass/skills and .brainmass/skills directories
+    - Parse SKILL.md frontmatter (name, description, disable-model-invocation, hooks, allowed_tools)
+    - Implement auto-invocation matching (confidence threshold)
+    - Implement slash command registration
+    - Implement hot-reload via filesystem watcher
+    - Implement invocation logging (skills considered, confidence scores, selection reasons)
+    - Track context consumption per skill
+    - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5_
+
+- [x] 15. Checkpoint — Intelligence layer complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 16. Plugin Registry
+  - [x] 16.1 Implement Plugin Registry in src/plugins/plugin_registry.py
+    - Implement marketplace registration (Git repos with .brainmass-plugin/marketplace.json)
+    - Implement plugin discovery (/plugin marketplace add {owner}/{repo})
+    - Implement installation (/plugin install {name}@{marketplace})
+    - Register all capabilities (commands, agents, skills, hooks, MCP servers, LSP servers)
+    - Implement enable/disable toggling per project and uninstallation
+    - Namespace plugin agents as plugin-name:agent-name
+    - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
+
+- [x] 17. Agent Registry and dispatch system
+  - [x] 17.1 Implement Agent Loader in src/agents/agent_loader.py
+    - Parse .md files with YAML frontmatter using python-frontmatter
+    - Validate required fields (name regex ^[a-z][a-z0-9-]*$, description non-empty)
+    - Normalize tool lists (comma-separated → list)
+    - Resolve model aliases via MODEL_MAP
+    - Enforce tools/disallowedTools mutual exclusivity
+    - Handle encoding edge cases (UTF-8 BOM, CRLF)
+    - _Requirements: 8.1, 8.2, 8.3, 8.8_
+  - [x] 17.2 Implement Agent Registry in src/agents/agent_registry.py
+    - Scan .brainmass/agents/ (project), ~/.brainmass/agents/ (user), plugin agents
+    - Apply precedence: project > user > plugin
+    - Generate tool definitions for model (name='agent:{name}')
+    - Implement hot-reload via filesystem watcher
+    - Warn when >5 agents registered (dispatch accuracy degrades)
+    - _Requirements: 8.5, 8.9, 8.10, 24.1_
+  - [x] 17.3 Implement Agent Dispatcher and Runner in src/agents/agent_dispatcher.py
+    - Dispatch tasks to agents based on model auto-dispatch or explicit invocation
+    - Execute 13-step agent lifecycle (dispatch → resolve → tools → MCP → skills → hooks → context → system → loop → stop → cleanup → release → return)
+    - Convert AgentDefinition to Strands Agent objects via agent_callback
+    - _Requirements: 8.6, 8.7_
+  - [x] 17.4 Create 5 built-in agent templates in src/agents/builtin_templates.py
+    - Code Reviewer (Sonnet, Read/Glob/Grep/Bash, purple)
+    - Security Auditor (Opus, read-only, OWASP skill, red)
+    - Implementer-Tester (Sonnet, all tools, PostToolUse auto-format, green)
+    - Researcher (Haiku, read-only, plan mode, cyan)
+    - Architect (Opus, GitHub MCP, ADR skill, blue)
+    - _Requirements: 8.12_
+  - [x]* 17.5 Write property tests for agent registry
+    - **Property 14: Agent definition parsing round-trip**
+    - **Validates: Requirements 8.1**
+    - **Property 15: Agent definition validation**
+    - **Validates: Requirements 8.2, 8.8**
+    - **Property 16: Model alias resolution**
+    - **Validates: Requirements 8.4**
+    - **Property 17: Agent precedence resolution**
+    - **Validates: Requirements 8.5**
+
+- [x] 18. Session Teleportation
+  - [x] 18.1 Implement Session Teleporter in src/session/teleporter.py
+    - Serialize all session state to portable JSON blob via Strands SessionManager with S3 backend
+    - Implement /teleport (move to terminal) and /desktop (hand off to desktop app)
+    - Maintain permission inheritance across surface transitions
+    - Manage worker lifecycle (subagents/teammates survive teleport)
+    - Maintain single trace ID for audit continuity
+    - Implement conflict resolution (last-write-wins with notification)
+    - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6, 13.7, 13.8_
+  - [x]* 18.2 Write property test for session serialization
+    - **Property 18: Session serialization round-trip**
+    - **Validates: Requirements 13.1**
+
+- [x] 19. Brainmass-as-MCP-Server mode
+  - [x] 19.1 Implement MCP server mode in src/mcp/server_mode.py
+    - Dual-mode: MCP client + MCP server via stdio transport (JSON-RPC 2.0)
+    - Expose Bash, Read, Write, Edit, LS, GrepTool, GlobTool, Replace tools
+    - No passthrough of internal MCP servers to connecting clients
+    - Fresh BrainmassMCPServer instance per client connection via run_stdio_server()
+    - Path sandboxing: all file operations confined to server working directory
+    - Pluggable permission_callback for tool-level access control
+    - _Requirements: 20.1, 20.2, 20.3, 20.4_
+  - [x]* 19.2 Write unit tests for MCP server mode in tests/unit/test_mcp_server_mode.py
+    - Test all 8 tool handlers (Bash, Read, Write, Edit, LS, GrepTool, GlobTool, Replace)
+    - Test path sandboxing (escape attempts return error, not exception)
+    - Test JSON-RPC dispatch (initialize, tools/list, tools/call, shutdown)
+    - Test permission_callback deny path
+    - _Requirements: 20.1, 20.2, 20.3, 20.4_
+
+- [ ] 20. Checkpoint — Ecosystem layer complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+
+- [x] 21. Unified Quota Manager
+  - [x] 21.1 Implement Quota Manager in src/cost/quota_manager.py
+    - Track consumption across all surfaces (web, mobile, desktop, CLI)
+    - Predict quota exhaustion based on run rate
+    - Alert at 80% threshold
+    - Provide usage breakdowns by surface and agent
+    - Support weekly rate limits for 24/7 agents
+    - Consume SDKRateLimitInfo events
+    - Support overage purchase for Max subscribers
+    - _Requirements: 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7_
+
+- [x] 22. Security and data classification
+  - [x] 22.1 Implement data classifier in src/security/data_classifier.py
+    - Classify context items for PII, PHI, financial data, credentials
+    - Integrate Bedrock Guardrails via guardrail_latest_message parameter
+    - Implement Constitutional AI filter
+    - Implement nest guard (prevent Brainmass inside Brainmass)
+    - _Requirements: 14.1, 14.2, 14.3, 14.5_
+  - [x] 22.2 Implement enterprise security in src/security/enterprise.py
+    - HIPAA compliance path for Enterprise plans
+    - AgentCore Identity integration (Okta, Entra, Cognito)
+    - AgentCore Policy (Cedar) for tool-level governance
+    - VPC-only mode support
+    - _Requirements: 14.4, 14.9, 14.10_
+
+- [x] 23. AgentCore runtime deployment
+  - [x] 23.1 Implement AgentCore runtime entrypoint in src/runtime/app.py
+    - Wire BedrockAgentCoreApp with @app.entrypoint decorator
+    - Build Orchestrator with all dependencies for production invocation
+    - Handle payload validation (input field, session_id)
+    - Return structured response with status, output, usage, trace_id
+    - _Requirements: 1.7, 18.3, 18.5_
+  - [x] 23.2 Implement runtime config loader in src/runtime/config.py
+    - Load and validate runtime environment variables (AGENTCORE_APP_NAME, AWS_REGION, etc.)
+    - Support strict mode (raises on missing required vars) for production
+    - _Requirements: 18.3, 18.4_
+
+- [-] 24. Observability instrumentation
+  - [x] 24.1 Implement tracer facade in src/observability/tracer.py
+    - Export `get_tracer(name: str) -> BrainmassTracer` factory function
+    - Export `get_hook_logger() -> HookLogger` singleton accessor
+    - Export `get_terminal_monitor() -> TerminalMonitor` singleton accessor
+    - Wire Strands `get_tracer('brainmass-v3')` as the production integration point
+    - _Requirements: 16.1_
+  - [-] 24.2 Instrument all src/ components with OTel spans
+    - Add `tracer.trace_agent_action()` calls in orchestrator.py and agent_dispatcher.py
+    - Add `tracer.trace_tool_call()` calls in subagent_manager.py and team_manager.py
+    - Add `tracer.trace_hook_execution()` calls in hook_engine.py (all 12 events)
+    - Add `tracer.trace_model_interaction()` calls in cost_governor.py after every model invocation
+    - Add `tracer.record_cost_span()` calls in cost_governor.record_usage()
+    - Add `tracer.record_context_health_span()` calls in context_manager.compact()
+    - Add `tracer.record_coordination_span()` calls in team_manager.py (messages, task claims, file locks)
+    - Add `tracer.record_effort_span()` calls in effort_controller.select_effort()
+    - Add `tracer.record_skill_span()` calls in skill_registry.py on invocation
+    - _Requirements: 16.1, 16.2, 16.3_
+  - [-] 24.3 Wire hook logger and terminal monitor
+    - Call `hook_logger.log_hook_execution()` in hook_engine.fire() for every event
+    - Integrate TerminalMonitor.format_dashboard() with ccusage-compatible output
+    - Wire CloudWatchExporter.export_metrics() as AgentCore Observability integration point
+    - Maintain single trace ID across surface transitions (set via tracer.set_trace_id())
+    - _Requirements: 16.3, 16.4, 16.5, 16.6_
+  - [ ]* 24.4 Write unit tests for observability in tests/unit/test_observability.py
+    - Test get_tracer() returns BrainmassTracer instance
+    - Test span recording for each span type (cost, context health, coordination, effort, skill)
+    - Test hook logger captures all 12 event types with correct fields
+    - Test TerminalMonitor.format_dashboard() produces non-empty output
+    - _Requirements: 16.1, 16.2, 16.3_
+
+- [ ] 25. Checkpoint — Observability complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 26. Evaluation suite
+  - [x] 26.1 Implement evaluation harness in evals/eval_suite.py
+    - BrainmassEvalSuite with all 8 evaluation dimensions
+    - ActorSimulator for multi-turn scenario generation
+    - Integrate AgentCore Evaluations (13 built-in) via agentcore_callback
+    - Support both on-demand (development) and continuous online (production) modes
+    - _Requirements: 17.1, 17.2, 17.3, 17.4_
+  - [x] 26.2 Write unit tests for evaluation suite in tests/unit/test_eval_suite.py
+    - Test each of the 8 evaluate_* methods with known inputs and expected pass/fail
+    - Test ActorSimulator.simulate() produces correct turn structure
+    - Test summary() aggregates results correctly
+    - _Requirements: 17.1, 17.2_
+
+- [x] 27. Enterprise managed settings
+  - [x] 27.1 Implement managed settings loader in src/config/enterprise.py
+    - Load organization-level policy from Git-based config repository
+    - Implement allowManagedHooksOnly flag: when true, block all user/project/plugin hooks in hook_engine.py scope resolution
+    - Enforce enterprise hooks at highest precedence (enterprise_managed scope)
+    - Support self-serve Enterprise deployment path (no Sales gate)
+    - Distribute policies via Git pull on session start
+    - _Requirements: 23.1, 23.2, 23.3, 23.4, 19.4, 19.5_
+  - [x]* 27.2 Write unit tests for enterprise settings in tests/unit/test_enterprise.py
+    - Test allowManagedHooksOnly blocks user/project/plugin hooks
+    - Test enterprise hooks fire at highest precedence
+    - Test Git-based config loading with mock repository
+    - _Requirements: 23.1, 23.2_
+
+- [x] 28. Learning Store vector index
+  - [x] 28.1 Implement Learning Store in src/agents/learning_store.py
+    - Persist learnings at .brainmass/learnings/ as JSON files with pattern, resolution, confidence, source_iteration fields
+    - Add vector embeddings using lightweight embedding model (injected as embed_callback for testability)
+    - Implement top-K semantic retrieval with configurable K (default 5)
+    - Integrate with AgentCore Memory long-term storage with semantic strategy via memory_callback
+    - Load only relevant learnings per session/iteration (not all learnings indiscriminately)
+    - Wire into loop_runner.py: store learnings after each iteration, load relevant ones at start
+    - _Requirements: 21.1, 21.2, 21.3, 21.4_
+  - [ ]* 28.2 Write property test for learning store in tests/property/test_learning_properties.py
+    - **Property 21: Learning store semantic retrieval**
+    - For any learning stored with an embedding, querying with semantically similar text returns it in top-K; unrelated query does not
+    - **Validates: Requirements 21.2**
+  - [x]* 28.3 Write unit tests for learning store in tests/unit/test_learning_store.py
+    - Test add_learning() persists JSON file with all required fields
+    - Test query_relevant() returns at most K results
+    - Test confidence filtering (low-confidence learnings ranked lower)
+    - _Requirements: 21.1, 21.3_
+
+- [x] 29. Compound loop orchestration
+  - [x] 29.1 Implement compound loops in src/agents/compound_loop.py
+    - Chain Analysis → Planning → Execution loops
+    - One agent's output becomes next agent's input
+    - Implement as configurable YAML-defined pipeline stages
+    - SubagentStop hooks write status to .brainmass/pipeline-state.json
+    - _Requirements: 22.1, 22.2, 22.3, 22.4_
+
+- [x] 30. Community-proven hook patterns
+  - [x] 30.1 Implement hook pattern templates in src/hooks/patterns.py
+    - SecurityGuardPattern: PreToolUse hook blocking dangerous bash commands (rm -rf /, DROP TABLE, curl | bash, chmod 777, git push --force) with structured deny HookResult
+    - ContextBackupPattern: PreCompact hook that copies all PRESERVE_VERBATIM items to .brainmass/backups/{timestamp}/
+    - AutoFormatPattern: PostToolUse hook on Write/Edit/MultiEdit events that runs configurable formatter on modified file path
+    - LoopContextTemplate: generates .brainmass/loop-context.json with all LoopContext fields
+    - TeamTaskListTemplate: generates .brainmass/tasks/{team-name}/tasks.json with TeamTask entries
+    - Each pattern receives HookContext, returns HookResult
+    - _Requirements: 27.1, 27.2, 27.3, 27.4, 27.5_
+  - [x]* 30.2 Write unit tests for hook patterns in tests/unit/test_hook_patterns.py
+    - Test SecurityGuardPattern blocks each of the 5 dangerous command patterns
+    - Test SecurityGuardPattern allows safe commands
+    - Test ContextBackupPattern creates files in .brainmass/backups/
+    - Test AutoFormatPattern invokes formatter with correct file path
+    - _Requirements: 27.2, 27.3_
+
+- [x] 31. Anthropic Messages API types
+  - [x] 31.1 Implement Anthropic Messages API types in src/types/api.py
+    - Define MessagesRequest dataclass: model, max_tokens (1-128000), messages, system, tools, tool_choice, temperature, thinking, stream
+    - Define ContentBlock union types: TextBlock, ImageBlock, ToolUseBlock, ToolResultBlock, ThinkingBlock, DocumentBlock
+    - Define SystemBlock, ToolDefinition, ToolChoice dataclasses
+    - Define UsageMetrics dataclass: input_tokens, output_tokens, cache_creation_input_tokens, cache_read_input_tokens
+    - Implement request_to_dict() serializer and response_usage_from_dict() parser
+    - Wire into cache_manager.inject_cache_controls() to add cache_control blocks to system and tool layers
+    - _Requirements: 28.1, 28.2, 28.3, 28.4_
+  - [x]* 31.2 Write property test for API request formatting in tests/property/test_api_properties.py
+    - **Property 22: API request schema conformance**
+    - For any valid MessagesRequest, request_to_dict() produces a dict with all required fields present and correctly typed
+    - **Validates: Requirements 28.1**
+  - [x]* 31.3 Write unit tests for API types in tests/unit/test_api_types.py
+    - Test max_tokens boundary (1 and 128000 are valid, 0 and 128001 are not)
+    - Test all ContentBlock types serialize to correct dict shape
+    - Test UsageMetrics parses cache_creation_input_tokens and cache_read_input_tokens
+    - Test thinking block requires budget_tokens > 0
+    - _Requirements: 28.1, 28.2, 28.3_
+
+- [ ] 32. Checkpoint — Enterprise features complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 33. End-to-end integration tests
+  - [x] 33.1 Write integration tests in tests/integration/test_request_lifecycle.py
+    - Full request lifecycle: user prompt → 8-step orchestrator flow → tool calls with PreToolUse/PostToolUse hooks → response with cost summary
+    - Verify all 12 hook events fire in correct order
+    - Verify Cost_Governor records usage after each model call
+    - Verify Context_Manager classifies and stores items
+    - _Requirements: 1.2, 3.1, 4.8_
+  - [x] 33.2 Write integration tests in tests/integration/test_agent_teams.py
+    - Spawn a 2-teammate team with shared task list
+    - Verify file-lock mutual exclusion (no two teammates edit same file simultaneously)
+    - Verify mailbox message delivery between teammates
+    - Verify SubagentStop hooks fire on each teammate completion
+    - _Requirements: 6.1, 6.2, 6.4, 6.5_
+  - [x] 33.3 Write integration tests in tests/integration/test_self_improving_loop.py
+    - Run 3-iteration loop with LoopContext file
+    - Verify each iteration starts with clean context (no prior conversation history)
+    - Verify learnings accumulate across iterations in loop-context.json
+    - Verify safety controls halt loop on 3+ repeated errors
+    - _Requirements: 7.1, 7.2, 7.5_
+  - [x] 33.4 Write integration tests in tests/integration/test_context_compaction.py
+    - Fill context to 83.5% threshold, trigger compaction
+    - Verify all PRESERVE_VERBATIM items present in session file post-compaction
+    - Verify EPHEMERAL items are dropped
+    - Verify PreCompact hook fires before compaction
+    - _Requirements: 2.4, 2.10, 2.11_
+
+- [ ] 34. Final checkpoint — run the evaluation suite and ensure we get a f=good score 
+
+## Notes
+
+- Tasks marked with `*` are optional and can be skipped for faster MVP
+- Each task references specific requirements for traceability
+- Checkpoints ensure incremental validation
+- Property tests validate universal correctness properties (Hypothesis, min 100 iterations)
+- Unit tests validate specific examples and edge cases
+- `src/observability/tracer.py` is currently empty — task 24.1 must be completed before 24.2/24.3
+- `src/agents/learning_store.py` exists but may need wiring into loop_runner.py (task 28.1)
+- `src/config/enterprise.py` exists but managed settings loader logic needs verification (task 27.1)
+- Integration tests directory is empty — tasks 33.x are all new work

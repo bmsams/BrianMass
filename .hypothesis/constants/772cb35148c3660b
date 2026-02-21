@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\s3transfer\constants.py
+# hypothesis_version: 6.148.7
+
+[1024, 'ChecksumCRC32', 'ChecksumCRC32C', 'ChecksumCRC64NVME', 'ChecksumMode', 'ChecksumSHA1', 'ChecksumSHA256', 'ExpectedBucketOwner', 'RequestPayer', 'SSECustomerAlgorithm', 'SSECustomerKey', 'SSECustomerKeyMD5', 'VersionId']

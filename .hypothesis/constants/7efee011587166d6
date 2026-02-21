@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\telemetry\metrics.py
+# hypothesis_version: 6.148.7
+
+[0.0, '      └─ Tool Calls:', ' - tooluse_', 'Count', 'MetricsClient', 'N/A', 'Trace', 'accumulated_metrics', 'accumulated_usage', 'average_cycle_time', 'average_time', 'cacheReadInputTokens', 'call_count', 'children', 'duration', 'end_time', 'error_count', 'execution_stats', 'id', 'input', 'inputTokens', 'input_params', 'latencyMs', 'message', 'metadata', 'meter', 'ms', 'name', 'outputTokens', 'parent_id', 'raw_name', 's', 'start_time', 'success_count', 'success_rate', 'timeToFirstByteMs', 'token', 'toolUseId', 'tool_info', 'tool_name', 'tool_usage', 'tool_use_id', 'totalTokens', 'total_cycles', 'total_duration', 'total_time', 'traces', 'unknown', 'unknown_tool', '├─ Execution Trace:', '├─ Tool Usage:']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\context\triage.py
+# hypothesis_version: 6.148.7
+
+['acceptance_criteria', 'api_response', 'decision_record', 'declaration', 'env_variable', 'exit_code', 'file_path', 'git_diff', 'schema', 'stack_trace', 'test_output', 'tool_call', 'tool_result', 'version_number']

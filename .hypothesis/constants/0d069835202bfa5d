@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\packaging\markers.py
+# hypothesis_version: 6.148.7
+
+['!=', '(', ')', '+', '.', '<', '<=', '==', '>', '>=', 'EvaluateContext', 'InvalidMarker', 'Marker', 'UndefinedComparison', 'and', 'default_environment', 'dependency_groups', 'extra', 'extras', 'final', 'implementation_name', 'in', 'lhs must be a string', 'lock_file', 'metadata', 'not in', 'or', 'os_name', 'platform_machine', 'platform_release', 'platform_system', 'platform_version', 'python_full_version', 'python_version', 'requirement', 'sys_platform']

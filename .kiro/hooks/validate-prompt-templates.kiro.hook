@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Validate Prompt Templates",
+  "description": "When prompt templates or steering files are edited, validates that {variable} placeholders match what the runtime provides.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "prompts/*.md",
+      "steering/*.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A prompt template or steering file was just edited. If it's a prompt template in prompts/, check that {variable} placeholders match what brain_mass/runtime.py provides: planner gets {task}, {repo_root}; coder gets {task}, {plan}, {repo_root}, {test_cmd}; reviewer gets {task}, {plan}, {diff}, {test_out}. Report any undefined or misspelled variables."
+  }
+}

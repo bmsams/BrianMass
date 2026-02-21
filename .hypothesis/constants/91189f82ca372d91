@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\event_loop\event_loop.py
+# hypothesis_version: 6.148.7
+
+[240, 'Agent', 'Messages', 'Recursive call', 'config', 'content', 'cycle failed', 'end_turn', 'event_loop_cycle_id', 'interrupt', 'interrupts', 'max_tokens', 'model_id', 'request_state', 'role', 'stop', 'stop_event_loop', 'stream_messages', 'text', 'toolResult', 'toolUse', 'toolUseId', 'tool_interrupt_event', 'tool_results', 'tool_use', 'tool_use_message', 'user']

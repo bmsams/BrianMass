@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\semconv\attributes\http_attributes.py
+# hypothesis_version: 6.148.7
+
+['CONNECT', 'DELETE', 'GET', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT', 'TRACE', '_OTHER', 'http.request.header', 'http.request.method', 'http.response.header', 'http.route']

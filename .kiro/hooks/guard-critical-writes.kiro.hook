@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Guard Critical Writes",
+  "description": "Before writing to critical files like app.py, factory.py, config.py, or brain_mass.json, verify the changes maintain the AgentCore contract, tool registry integrity, and config schema.",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": [
+      "write"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A write operation is about to happen. If the target file is one of: brain_mass/app.py, brain_mass/factory.py, brain_mass/config.py, or brain_mass.json — verify the write maintains: 1) The AgentCore @app.entrypoint contract in app.py, 2) The _TOOL_REGISTRY consistency in factory.py, 3) The dataclass schema in config.py, 4) Valid JSON structure in brain_mass.json. If the file is not critical, approve the write. Only flag actual problems."
+  }
+}

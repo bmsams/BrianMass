@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\hooks\hook_engine.py
+# hypothesis_version: 6.148.7
+
+['*', 'allow', 'block', 'continue', 'definition', 'deny', 'enterprise_managed', 'event', 'plugin', 'project_local', 'project_shared', 'scope', 'scope_id', 'skill_frontmatter', 'subagent_frontmatter', 'user_wide']

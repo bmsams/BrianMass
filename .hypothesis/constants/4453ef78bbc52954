@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\types\api.py
+# hypothesis_version: 6.148.7
+
+[0.0, 1.0, 4096, 128000, 'assistant', 'budget_tokens', 'cache_control', 'content', 'content_block', 'delta', 'description', 'document', 'enabled', 'ephemeral', 'id', 'image', 'index', 'input', 'input_schema', 'input_tokens', 'is_error', 'max_tokens', 'message', 'messages', 'model', 'name', 'output_tokens', 'role', 'source', 'stop_reason', 'stream', 'system', 'temperature', 'text', 'thinking', 'tool_choice', 'tool_result', 'tool_use', 'tool_use_id', 'tools', 'type', 'usage']

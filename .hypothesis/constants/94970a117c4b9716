@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\jsonschema\exceptions.py
+# hypothesis_version: 6.148.7
+
+['$', "'", "']", '.', 'RefResolutionError', '[', "['", '\\', "\\'", '\\\\', ']', '_wrapped', 'anyOf', 'cause', 'context', 'error', 'errors', 'instance', 'message', 'metaschema', 'oneOf', 'parent', 'path', 'schema', 'schema_path', 'type', 'validator', 'validator_value']

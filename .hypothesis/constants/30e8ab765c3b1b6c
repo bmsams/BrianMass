@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\strands\event_loop\streaming.py
+# hypothesis_version: 6.148.7
+
+[1000, 'INVALID_TOOL_NAME', '[blank text]', 'assistant', 'citation', 'citations', 'citationsContent', 'content', 'contentBlockDelta', 'contentBlockStart', 'contentBlockStop', 'current_tool_use', 'delta', 'end_turn', 'input', 'inputTokens', 'latencyMs', 'message', 'messageStart', 'messageStop', 'metadata', 'metrics', 'name', 'outputTokens', 'reasoningContent', 'reasoningText', 'redactContent', 'redactedContent', 'role', 'signature', 'start', 'stopReason', 'text', 'timeToFirstByteMs', 'toolUse', 'toolUseId', 'totalTokens', 'usage']

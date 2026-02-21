@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\session\teleporter.py
+# hypothesis_version: 6.148.7
+
+['1.0', 'Body', 'Session teleported', 'active_workers', 'brainmass', 'cli', 'compaction_state', 'conflict', 'content', 'conversation_history', 'cost_tracking', 'create_event', 'create_memory', 'create_or_get_memory', 'desktop', 'field', 'from_surface', 'hook_registrations', 'id', 'memory', 'memoryId', 'memory_id', 'metadata', 'mobile', 'name', 'pending_approvals', 'query', 'retrieve_memories', 's3', 'schema_version', 'serialized_at', 'session-teleporter', 'session_key', 'session_state', 'sessions/', 'state', 'surface', 'target_surface', 'teleported_at', 'text', 'timestamp', 'to_surface', 'tool_permissions', 'trace_id', 'user', 'utf-8', 'value', 'web', 'worker_count']

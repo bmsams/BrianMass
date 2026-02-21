@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\opentelemetry\semconv\attributes\error_attributes.py
+# hypothesis_version: 6.148.7
+
+['_OTHER', 'error.type']

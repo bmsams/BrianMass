@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\AppData\Roaming\Python\Python312\site-packages\watchdog\observers\winapi.py
+# hypothesis_version: 6.148.7
+
+[128, 192, 256, 258, 995, 2048, 64000, 65534, 65535, 33554432, 1073741824, 4294967295, '.', 'Action', 'FileName', 'FileNameLength', 'Internal', 'InternalHigh', 'NextEntryOffset', 'Offset', 'OffsetHigh', 'Pointer', 'hEvent', 'kernel32', 'utf-16', 'utf-8']

@@ -1,0 +1,4 @@
+# file: C:\Users\bms26\app_dev\brainmass\src\types\core.py
+# hypothesis_version: 6.148.7
+
+[0.0, 0.08, 0.3, 0.5, 0.8, 0.95, 1.0, 3.0, 3.75, 4.0, 5.0, 6.25, 15.0, 25.0, 600000, 'COMPRESS_AGGRESSIVE', 'EPHEMERAL', 'Notification', 'PRESERVE_STRUCTURED', 'PRESERVE_VERBATIM', 'PermissionRequest', 'PostToolUse', 'PostToolUseFailure', 'PreCompact', 'PreToolUse', 'SessionEnd', 'SessionStart', 'Setup', 'Stop', 'SubagentStop', 'UserPromptSubmit', 'agent', 'agent_teams', 'command', 'critical', 'deep', 'default', 'exceeded', 'haiku', 'hierarchical', 'inherit', 'ok', 'opus', 'pipeline', 'project', 'prompt', 'quick', 'self_improving_loop', 'sonnet', 'standard', 'warning']

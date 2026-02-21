@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Check Tool Registration",
+  "description": "When a new Python file is created in brain_mass/tools/, checks that the tool functions are registered in factory.py _TOOL_REGISTRY and listed in the appropriate agent config skills arrays.",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "brain_mass/tools/*.py"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A new tool file was just created in brain_mass/tools/. Check that: 1) All @tool decorated functions in the new file are registered in brain_mass/factory.py _TOOL_REGISTRY with the correct \"module:function\" key. 2) The tools are added to the skills array of relevant agent configs in agents/*.json. 3) The __init__.py in brain_mass/tools/ is updated if needed. Report any missing registrations."
+  }
+}
