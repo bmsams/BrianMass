@@ -247,12 +247,3 @@ class WorkflowState:
     gate_decisions: list[dict] = field(default_factory=list)
     feature_description: str = ""
 
-
-# ---------------------------------------------------------------------------
-# Callback type aliases for pluggable workflow execution
-# ---------------------------------------------------------------------------
-
-# Phase callback: (phase, context_str) -> result summary
-PhaseCallback = type(None)  # Forward reference — defined concretely in engine.py
-# Approval callback: (phase, artifact_paths, summary) -> GateResult
-ApprovalCallback = type(None)  # Forward reference — defined concretely in engine.py

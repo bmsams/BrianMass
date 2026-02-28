@@ -22,9 +22,12 @@ from src.types.workflow import (
     WorkflowPhase,
     WorkflowState,
 )
+from src.workflow.engine import WorkflowEngine, WorkflowResult
 
 __all__ = [
+    "WorkflowEngine",
     "WorkflowMode",
     "WorkflowPhase",
+    "WorkflowResult",
     "WorkflowState",
 ]

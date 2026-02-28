@@ -24,7 +24,6 @@ from src.evals.cases import (
     JOURNEY_MAP_CASES,
     TDD_CASES,
     TRACEABILITY_CASES,
-    WORKFLOW_E2E_CASES,
     EvalCase,
 )
 from src.evals.runner import (

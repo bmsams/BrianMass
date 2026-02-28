@@ -29,14 +29,12 @@ from pathlib import Path
 from typing import Any
 
 from src.evals.cases import (
-    ALL_CASES,
     CODER_CASES,
     DESIGN_DOC_CASES,
     EARS_SPEC_CASES,
     JOURNEY_MAP_CASES,
     TDD_CASES,
     TRACEABILITY_CASES,
-    WORKFLOW_E2E_CASES,
     EvalCase,
 )
 from src.evals.evaluators import (
@@ -74,7 +72,6 @@ PHASE_CASES_MAP: dict[str, list[EvalCase]] = {
     "tdd": TDD_CASES,
     "coder": CODER_CASES,
     "traceability": TRACEABILITY_CASES,
-    "e2e": WORKFLOW_E2E_CASES,
 }
 
 
@@ -419,96 +416,6 @@ def run_all_evaluations(
             len(phase_report.results),
             phase_report.pass_rate * 100,
         )
-
-    return report
-
-
-def run_strands_evaluations(
-    agent_callback: AgentCallback,
-    phases: list[str] | None = None,
-) -> EvalReport:
-    """Run evaluations using Strands Evals SDK (LLM-as-Judge).
-
-    This requires ``strands-agents-evals`` to be installed and configured
-    with a Bedrock model for judging.
-
-    Falls back to deterministic evaluation if the SDK is not available.
-    """
-    try:
-        from strands_evals import Case, Experiment  # type: ignore[import-untyped]
-        from strands_evals.evaluators import OutputEvaluator  # type: ignore[import-untyped]
-    except ImportError:
-        logger.warning(
-            "strands-agents-evals not installed. Falling back to deterministic evals. "
-            "Install with: pip install strands-agents-evals"
-        )
-        return run_all_evaluations(agent_callback=agent_callback, phases=phases)
-
-    report = EvalReport(
-        timestamp=datetime.now(UTC).isoformat(),
-        execution_mode="llm_judge",
-    )
-
-    target_phases = phases or list(PHASE_EVALUATOR_MAP.keys())
-
-    for phase in target_phases:
-        cases_list = PHASE_CASES_MAP.get(phase, [])
-        if not cases_list:
-            continue
-
-        # Build Strands Cases
-        strands_cases = []
-        for case in cases_list:
-            rubric = _get_phase_rubric(phase)
-            strands_cases.append(
-                Case(
-                    name=case.name,
-                    input=case.input,
-                    expected_output="",  # LLM judge doesn't need exact match
-                    metadata={
-                        "phase": phase,
-                        "category": case.category,
-                        "difficulty": case.difficulty,
-                    },
-                )
-            )
-
-        # Build evaluator with phase-specific rubric
-        evaluators = [
-            OutputEvaluator(
-                rubric=_get_phase_rubric(phase),
-                include_inputs=True,
-            )
-        ]
-
-        experiment = Experiment(cases=strands_cases, evaluators=evaluators)
-
-        def get_response(case: Case) -> str:
-            eval_case = next(
-                (c for c in cases_list if c.name == case.name), None
-            )
-            prior = {}
-            if eval_case:
-                prior = {k: v for k, v in eval_case.context.items() if isinstance(v, str)}
-            agent_name = f"sdlc-{phase.replace('_', '-')}"
-            return agent_callback(agent_name, case.input, prior)
-
-        # Run the experiment
-        exp_reports = experiment.run_evaluations(get_response)
-
-        # Convert Strands results to our format
-        phase_report = PhaseReport(phase=phase)
-        for strands_report in exp_reports:
-            for entry in strands_report.entries:
-                result = EvalResult(
-                    evaluator_name=f"llm_judge_{phase}",
-                    case_name=entry.case.name,
-                    overall_score=entry.score,
-                    passed=entry.score >= 0.75,
-                )
-                phase_report.results.append(result)
-
-        report.phase_reports[phase] = phase_report
 
     return report
 

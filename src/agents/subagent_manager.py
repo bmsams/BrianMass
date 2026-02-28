@@ -76,32 +76,6 @@ def _production_agent_callback(
     return _normalize_strands_result(raw)
 
 
-# --- Production integration point ---
-def _production_as_tool_callback(agent_def: AgentDefinition) -> dict:
-    """Wrap an agent as a tool descriptor using Agent.as_tool().
-
-    Requirements: 2.4, 2.5
-    """
-    try:
-        from strands import Agent  # type: ignore[import-untyped]
-        from strands.models.bedrock import BedrockModel  # type: ignore[import-untyped]
-    except ImportError as exc:
-        raise RuntimeError(
-            "strands-agents is required for Agent.as_tool(). "
-            "Install with: pip install strands-agents  "
-            "Or inject an as_tool_callback to bypass this requirement."
-        ) from exc
-
-    model_id = _BEDROCK_MODEL_IDS.get(agent_def.model, _BEDROCK_MODEL_IDS["sonnet"])
-    model = BedrockModel(model_id=model_id)
-    agent = Agent(model=model, system_prompt=agent_def.system_prompt or "")
-    # Agent.as_tool() returns a callable tool descriptor
-    agent.as_tool(
-        name=f"agent:{agent_def.name}",
-        description=agent_def.description,
-    )
-    return {"name": f"agent:{agent_def.name}", "description": agent_def.description}
-
 
 def _default_agent_callback(
     agent_def: AgentDefinition,

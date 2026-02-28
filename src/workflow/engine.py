@@ -28,7 +28,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from src.types.core import AgentBudget, AgentDefinition, AgentResult
+from src.types.core import AgentDefinition
 from src.types.workflow import (
     GateDecision,
     GateResult,

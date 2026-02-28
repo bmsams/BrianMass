@@ -11,7 +11,6 @@ Evaluators:
 - ``TDDEvaluator``        — validates test-first discipline, coverage, RED state
 - ``CoderEvaluator``      — validates R/Y/G task tracking, implementation quality
 - ``TraceabilityEvaluator`` — validates cross-phase traceability matrix completeness
-- ``WorkflowE2EEvaluator`` — validates end-to-end workflow execution
 
 Usage::
 
