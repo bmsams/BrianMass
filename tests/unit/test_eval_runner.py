@@ -140,38 +140,43 @@ class TestCaseDiversity:
 # Runner execution
 # ==========================================================================
 
+def _test_callback(agent_name: str, task: str, context: dict) -> str:
+    """Test callback that echoes input (for testing evaluator logic, not agents)."""
+    return task
+
+
 class TestRunPhaseEvaluations:
-    """Test the phase evaluation runner in deterministic mode."""
+    """Test the phase evaluation runner with injected callback."""
 
     def test_ears_phase_runs(self):
         """Runner should execute all EARS cases without errors."""
-        report = run_phase_evaluations("ears_spec")
+        report = run_phase_evaluations("ears_spec", agent_callback=_test_callback)
         assert isinstance(report, PhaseReport)
         assert len(report.results) == len(EARS_SPEC_CASES)
 
     def test_journey_phase_runs(self):
-        report = run_phase_evaluations("journey_map")
+        report = run_phase_evaluations("journey_map", agent_callback=_test_callback)
         assert isinstance(report, PhaseReport)
         assert len(report.results) == len(JOURNEY_MAP_CASES)
 
     def test_design_phase_runs(self):
-        report = run_phase_evaluations("design_doc")
+        report = run_phase_evaluations("design_doc", agent_callback=_test_callback)
         assert len(report.results) == len(DESIGN_DOC_CASES)
 
     def test_tdd_phase_runs(self):
-        report = run_phase_evaluations("tdd")
+        report = run_phase_evaluations("tdd", agent_callback=_test_callback)
         assert len(report.results) == len(TDD_CASES)
 
     def test_coder_phase_runs(self):
-        report = run_phase_evaluations("coder")
+        report = run_phase_evaluations("coder", agent_callback=_test_callback)
         assert len(report.results) == len(CODER_CASES)
 
     def test_traceability_phase_runs(self):
-        report = run_phase_evaluations("traceability")
+        report = run_phase_evaluations("traceability", agent_callback=_test_callback)
         assert len(report.results) == len(TRACEABILITY_CASES)
 
     def test_unknown_phase_returns_empty(self):
-        report = run_phase_evaluations("nonexistent")
+        report = run_phase_evaluations("nonexistent", agent_callback=_test_callback)
         assert len(report.results) == 0
 
     def test_custom_agent_callback(self):
@@ -197,7 +202,7 @@ class TestRunPhaseEvaluations:
                 difficulty="easy",
             ),
         ]
-        report = run_phase_evaluations("ears_spec", cases=custom)
+        report = run_phase_evaluations("ears_spec", agent_callback=_test_callback, cases=custom)
         assert len(report.results) == 1
         assert report.results[0].case_name == "custom_1"
 
@@ -206,18 +211,18 @@ class TestRunAllEvaluations:
     """Test the full evaluation runner."""
 
     def test_runs_all_phases(self):
-        report = run_all_evaluations()
+        report = run_all_evaluations(agent_callback=_test_callback)
         assert isinstance(report, EvalReport)
         assert len(report.phase_reports) == len(PHASE_EVALUATOR_MAP)
 
     def test_runs_specific_phases(self):
-        report = run_all_evaluations(phases=["ears_spec", "tdd"])
+        report = run_all_evaluations(agent_callback=_test_callback, phases=["ears_spec", "tdd"])
         assert len(report.phase_reports) == 2
         assert "ears_spec" in report.phase_reports
         assert "tdd" in report.phase_reports
 
     def test_report_has_timestamp(self):
-        report = run_all_evaluations(phases=["ears_spec"])
+        report = run_all_evaluations(agent_callback=_test_callback, phases=["ears_spec"])
         assert report.timestamp
 
 
@@ -227,23 +232,22 @@ class TestRunAllEvaluations:
 
 class TestEvalReport:
     def test_overall_pass_rate(self):
-        report = run_all_evaluations(phases=["ears_spec"])
-        # In deterministic mode (case input = agent output), scores will vary
+        report = run_all_evaluations(agent_callback=_test_callback, phases=["ears_spec"])
         assert 0.0 <= report.overall_pass_rate <= 1.0
 
     def test_overall_avg_score(self):
-        report = run_all_evaluations(phases=["ears_spec"])
+        report = run_all_evaluations(agent_callback=_test_callback, phases=["ears_spec"])
         assert 0.0 <= report.overall_avg_score <= 1.0
 
     def test_summary_output(self):
-        report = run_all_evaluations(phases=["ears_spec"])
+        report = run_all_evaluations(agent_callback=_test_callback, phases=["ears_spec"])
         summary = report.summary()
         assert "BRAINMASS WORKFLOW EVALUATION REPORT" in summary
         assert "ears_spec" in summary
         assert "Phase Breakdown" in summary
 
     def test_json_serialization(self):
-        report = run_all_evaluations(phases=["ears_spec"])
+        report = run_all_evaluations(agent_callback=_test_callback, phases=["ears_spec"])
         json_str = report.to_json()
         data = json.loads(json_str)
         assert "phases" in data
@@ -252,7 +256,7 @@ class TestEvalReport:
         assert "overall_pass_rate" in data
 
     def test_total_cases_correct(self):
-        report = run_all_evaluations(phases=["ears_spec", "tdd"])
+        report = run_all_evaluations(agent_callback=_test_callback, phases=["ears_spec", "tdd"])
         expected = len(EARS_SPEC_CASES) + len(TDD_CASES)
         assert report.total_cases == expected
 
@@ -267,7 +271,7 @@ class TestPhaseReport:
         assert report.avg_score == 0.0  # Empty report
 
     def test_failed_cases_property(self):
-        report = run_phase_evaluations("ears_spec")
+        report = run_phase_evaluations("ears_spec", agent_callback=_test_callback)
         # All cases should have some failed checks in deterministic mode
         assert isinstance(report.failed_cases, list)
 

@@ -1,12 +1,10 @@
-"""Evaluation runner — executes eval suites and generates reports.
+"""Evaluation runner — executes eval suites against real Strands agents.
 
-Supports two execution modes:
-1. **Deterministic** (default): Uses custom WorkflowEvaluators for fast CI runs
-2. **LLM-as-Judge**: Uses ``strands_evals`` SDK evaluators for semantic quality
+Runs every eval case through the actual SDLC agents via Strands SDK +
+Amazon Bedrock, then scores the output with deterministic evaluators.
 
 Usage::
 
-    # Run all deterministic evals
     from src.evals.runner import run_all_evaluations
     report = run_all_evaluations()
     print(report.summary())
@@ -14,11 +12,9 @@ Usage::
     # Run evals for a specific phase
     report = run_phase_evaluations("ears_spec")
 
-    # Run with actual agent execution (production)
-    report = run_all_evaluations(use_agents=True)
-
-    # Run with Strands Evals SDK (LLM-as-Judge)
-    report = run_all_evaluations(use_llm_judge=True)
+Requires:
+- ``strands-agents`` installed
+- AWS credentials configured for Bedrock access
 """
 
 from __future__ import annotations
@@ -90,9 +86,66 @@ PHASE_CASES_MAP: dict[str, list[EvalCase]] = {
 AgentCallback = Callable[[str, str, dict[str, str]], str]
 
 
-def _default_agent_callback(agent_name: str, task: str, context: dict[str, str]) -> str:
-    """Default stub that returns the task as-is (for testing the evaluators themselves)."""
-    return task
+# ---------------------------------------------------------------------------
+# Real Strands agent callback
+# ---------------------------------------------------------------------------
+
+# Phase → agent system prompt (loaded from .brainmass/agents/ templates)
+_AGENT_PROMPTS: dict[str, str] = {}
+
+
+def _load_agent_prompt(agent_name: str) -> str:
+    """Load the system prompt from a .brainmass/agents/<name>.md file."""
+    if agent_name in _AGENT_PROMPTS:
+        return _AGENT_PROMPTS[agent_name]
+
+    import frontmatter
+
+    for search_dir in [
+        Path(".brainmass/agents"),
+        Path.home() / ".brainmass" / "agents",
+    ]:
+        md_path = search_dir / f"{agent_name}.md"
+        if md_path.exists():
+            post = frontmatter.loads(md_path.read_text(encoding="utf-8"))
+            _AGENT_PROMPTS[agent_name] = post.content.strip()
+            return _AGENT_PROMPTS[agent_name]
+
+    return f"You are the {agent_name} agent."
+
+
+def _strands_agent_callback(agent_name: str, task: str, context: dict[str, str]) -> str:
+    """Execute a real Strands Agent via Bedrock and return the output.
+
+    This is the only agent callback — no stubs, no fakes.
+    """
+    from strands import Agent
+    from strands.models.bedrock import BedrockModel
+
+    from src.agents._strands_utils import _BEDROCK_MODEL_IDS, _normalize_strands_result
+
+    system_prompt = _load_agent_prompt(agent_name)
+
+    # Build the full prompt with prior artifact context
+    parts = [f"## Task\n{task}"]
+    for key, content in context.items():
+        if content.strip():
+            parts.append(f"## Prior Artifact: {key}\n{content}")
+    full_prompt = "\n\n---\n\n".join(parts)
+
+    # Use Sonnet for evals (fast + capable)
+    model_id = _BEDROCK_MODEL_IDS.get("sonnet", "us.anthropic.claude-sonnet-4-5-v1:0")
+    model = BedrockModel(model_id=model_id)
+
+    agent = Agent(
+        model=model,
+        system_prompt=system_prompt,
+        callback_handler=None,
+    )
+
+    raw = agent(full_prompt)
+    result = _normalize_strands_result(raw)
+    return result.get("summary", "")
 
 
 # ---------------------------------------------------------------------------
@@ -275,12 +328,12 @@ def run_phase_evaluations(
     agent_callback: AgentCallback | None = None,
     cases: list[EvalCase] | None = None,
 ) -> PhaseReport:
-    """Run evaluations for a single phase.
+    """Run evaluations for a single phase using real Strands agents.
 
     Args:
         phase: Phase name (ears_spec, journey_map, design_doc, tdd, coder, traceability)
         agent_callback: Function that executes the agent and returns output.
-                        If None, uses the case input as the output (eval-the-evaluator mode).
+                        Defaults to ``_strands_agent_callback`` (real Bedrock agent).
         cases: Override cases list. If None, uses the default cases for the phase.
 
     Returns:
@@ -293,7 +346,7 @@ def run_phase_evaluations(
 
     evaluator = evaluator_cls()
     case_list = cases or PHASE_CASES_MAP.get(phase, [])
-    callback = agent_callback or _default_agent_callback
+    callback = agent_callback or _strands_agent_callback
 
     report = PhaseReport(phase=phase)
 
@@ -339,10 +392,11 @@ def run_all_evaluations(
     agent_callback: AgentCallback | None = None,
     phases: list[str] | None = None,
 ) -> EvalReport:
-    """Run evaluations across all phases.
+    """Run evaluations across all phases using real Strands agents.
 
     Args:
-        agent_callback: Function that executes agents. None = eval-the-evaluator mode.
+        agent_callback: Function that executes agents. Defaults to real
+                        Strands agent via Bedrock.
         phases: Specific phases to run. None = all phases.
 
     Returns:
@@ -350,7 +404,7 @@ def run_all_evaluations(
     """
     report = EvalReport(
         timestamp=datetime.now(UTC).isoformat(),
-        execution_mode="agent" if agent_callback else "deterministic",
+        execution_mode="strands_agent",
     )
 
     target_phases = phases or list(PHASE_EVALUATOR_MAP.keys())
