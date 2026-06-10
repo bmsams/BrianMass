@@ -263,7 +263,7 @@ class LearningStore:
         # Attempt vector search first (Req 21.2)
         query_embedding = self._compute_embedding_for_text(task_description)
         use_vector = bool(query_embedding) and any(
-            l.embedding for l in self._learnings
+            entry.embedding for entry in self._learnings
         )
 
         scored: list[tuple[float, Learning]] = []
@@ -343,7 +343,7 @@ class LearningStore:
 
         self._path.parent.mkdir(parents=True, exist_ok=True)
 
-        entries = [_learning_to_dict(l) for l in self._learnings]
+        entries = [_learning_to_dict(entry) for entry in self._learnings]
         self._path.write_text(
             json.dumps(entries, indent=2),
             encoding="utf-8",

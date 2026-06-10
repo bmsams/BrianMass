@@ -13,8 +13,6 @@ system can distinguish good agent output from bad.
 
 from __future__ import annotations
 
-import pytest
-
 from src.evals.evaluators import (
     CoderEvaluator,
     DesignDocEvaluator,
@@ -25,7 +23,6 @@ from src.evals.evaluators import (
     TDDEvaluator,
     TraceabilityEvaluator,
 )
-
 
 # ==========================================================================
 # EARS Spec Evaluator

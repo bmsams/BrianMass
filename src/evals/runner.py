@@ -515,7 +515,7 @@ def _get_phase_rubric(phase: str) -> str:
 
 def _make_pattern_check(pattern: str, matched: bool, expected: bool) -> Any:
     """Create an EvalCheck for a pattern match result."""
-    from src.evals.evaluators import EvalCheck, EvalVerdict
+    from src.evals.evaluators import EvalCheck
 
     if expected and not matched:
         return EvalCheck(

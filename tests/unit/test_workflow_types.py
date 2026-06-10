@@ -10,18 +10,15 @@ Tests cover:
 from __future__ import annotations
 
 from src.types.workflow import (
-    CorrectnessProperty,
+    SDLC_PHASE_ORDER,
     CorrectnessType,
-    CustomerJourney,
     EARSRequirement,
     EARSType,
     GateDecision,
     GateResult,
     JourneyStep,
     MoSCoWPriority,
-    SDLC_PHASE_ORDER,
     TaskColor,
-    TraceabilityMatrix,
     TraceabilityRow,
     WorkflowMode,
     WorkflowPhase,

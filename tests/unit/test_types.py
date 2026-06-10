@@ -292,8 +292,10 @@ class TestLoopContext:
 
 class TestLearning:
     def test_defaults(self):
-        l = Learning(pattern="retry on 429", resolution="add backoff", confidence=0.9, source_iteration=3)
-        assert l.embedding is None
+        learning = Learning(
+            pattern="retry on 429", resolution="add backoff", confidence=0.9, source_iteration=3
+        )
+        assert learning.embedding is None
 
 
 class TestPluginManifest:

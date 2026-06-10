@@ -90,8 +90,8 @@ class TestSerialize:
     def test_learnings_are_plain_dicts(self):
         ctx = _make_context()
         result = serialize(ctx)
-        for l in result["learnings"]:
-            assert isinstance(l, dict)
+        for entry in result["learnings"]:
+            assert isinstance(entry, dict)
 
     def test_empty_lists_preserved(self):
         ctx = _make_context(learnings=[], failed_approaches=[], constraints=[])

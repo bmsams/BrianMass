@@ -30,11 +30,19 @@ _message = st.fixed_dictionaries({"role": _role, "content": st.text(min_size=0, 
 _conversation = st.lists(_message, min_size=0, max_size=10)
 
 # Tool permissions: tool name → bool
-_tool_name = st.text(alphabet=st.characters(whitelist_categories=("Ll", "Lu", "Nd"), whitelist_characters="_"), min_size=1, max_size=30)
+_tool_name = st.text(
+    alphabet=st.characters(whitelist_categories=("Ll", "Lu", "Nd"), whitelist_characters="_"),
+    min_size=1,
+    max_size=30,
+)
 _tool_permissions = st.dictionaries(_tool_name, st.booleans(), max_size=10)
 
 # Active workers: list of worker IDs
-_worker_id = st.text(alphabet=st.characters(whitelist_categories=("Ll", "Lu", "Nd"), whitelist_characters="-"), min_size=1, max_size=40)
+_worker_id = st.text(
+    alphabet=st.characters(whitelist_categories=("Ll", "Lu", "Nd"), whitelist_characters="-"),
+    min_size=1,
+    max_size=40,
+)
 _active_workers = st.lists(_worker_id, min_size=0, max_size=5)
 
 # Pending approvals: list of dicts
@@ -75,7 +83,11 @@ _hook_registrations = st.dictionaries(
 # Trace ID
 _trace_id = st.one_of(
     st.uuids().map(str),
-    st.text(alphabet=st.characters(whitelist_categories=("Ll", "Lu", "Nd"), whitelist_characters="-"), min_size=8, max_size=64),
+    st.text(
+        alphabet=st.characters(whitelist_categories=("Ll", "Lu", "Nd"), whitelist_characters="-"),
+        min_size=8,
+        max_size=64,
+    ),
 )
 
 # Full SessionState strategy

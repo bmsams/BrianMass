@@ -26,10 +26,10 @@ from __future__ import annotations
 import logging
 import math
 import statistics
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from enum import Enum
-from typing import Callable, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -202,7 +202,7 @@ class BrainmassEvalSuite:
 
     def __init__(
         self,
-        quality_scorer: Optional[Callable[[dict], float]] = None,
+        quality_scorer: Callable[[dict], float] | None = None,
     ) -> None:
         """Initialise the evaluation suite.
 
@@ -767,7 +767,7 @@ class BrainmassEvalSuite:
             "fail_count": fail_count,
             "total_dimensions": len(results),
             "weighted_score": round(weighted_score, 4),
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "dimensions": dimensions,
         }
 
@@ -815,8 +815,8 @@ class _Turn:
     """A single turn in a simulated multi-turn conversation."""
     role: str
     content: str
-    response: Optional[str] = None
-    timestamp: Optional[str] = None
+    response: str | None = None
+    timestamp: str | None = None
 
 
 class ActorSimulator:
@@ -877,7 +877,7 @@ class ActorSimulator:
         results: list[dict] = []
 
         for turn in self._turns:
-            timestamp = datetime.now(timezone.utc).isoformat()
+            timestamp = datetime.now(UTC).isoformat()
             try:
                 response = agent_callback(turn.role, turn.content)
             except Exception as exc:

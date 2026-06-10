@@ -9,7 +9,7 @@ Requirements: 28.1, 28.2, 28.3, 28.4
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Union
+from typing import Any
 
 # ---------------------------------------------------------------------------
 # Content Block types (Requirement 28.2)
@@ -64,9 +64,9 @@ class DocumentBlock:
 
 
 # Union of all content block types
-ContentBlock = Union[
-    TextBlock, ImageBlock, ToolUseBlock, ToolResultBlock, ThinkingBlock, DocumentBlock
-]
+ContentBlock = (
+    TextBlock | ImageBlock | ToolUseBlock | ToolResultBlock | ThinkingBlock | DocumentBlock
+)
 
 
 # ---------------------------------------------------------------------------
