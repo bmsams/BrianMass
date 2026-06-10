@@ -276,10 +276,10 @@ class QuotaManager:
     # ------------------------------------------------------------------
 
     def is_weekly_rate_limited(self) -> bool:
-        """Check if the weekly rate limit has been exceeded.
+        """Check if the weekly rate limit has been reached.
 
         Returns True if a weekly rate limit is configured and the current
-        week's token usage exceeds it.
+        week's token usage has reached or exceeded it.
         """
         with self._lock:
             limit = self._config.weekly_rate_limit_tokens

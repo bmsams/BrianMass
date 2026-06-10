@@ -187,7 +187,7 @@ class EARSSpecEvaluator(WorkflowEvaluator):
         ))
 
         # 6. Rationale provided
-        rationale_count = len(re.findall(r"\*\*rationale\*\*:?", text))
+        rationale_count = len(re.findall(r"\*\*rationale:?\*\*:?", text))
         checks.append(EvalCheck(
             name="rationale",
             verdict=EvalVerdict.PASS if rationale_count >= len(unique_ids) * 0.5 else EvalVerdict.WARN,
@@ -220,7 +220,9 @@ class EARSSpecEvaluator(WorkflowEvaluator):
 
         # 9. Specificity — ACs contain concrete values
         specific_acs = re.findall(
-            r"AC-\d+[^:]*:.*?(?:\d+|seconds?|minutes?|ms|%|bytes?|mb|gb)", text
+            r"AC-\d+[^:]*:.*?(?:\d+|seconds?|minutes?|ms|%|bytes?|mb|gb)",
+            output,
+            re.IGNORECASE,
         )
         specificity_ratio = len(specific_acs) / max(ac_count, 1)
         checks.append(EvalCheck(

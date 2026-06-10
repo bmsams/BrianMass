@@ -55,6 +55,11 @@ def _default_embedding_callback(text: str) -> list[float]:
     return []
 
 
+def _default_memory_callback(learning_id: str, learning_dict: dict) -> bool:
+    """Default no-op memory callback — skips AgentCore persistence."""
+    return True
+
+
 # --- Production integration point ---
 def _production_memory_callback(learning_id: str, learning_dict: dict) -> bool:
     """Persist a learning to AgentCore Memory long-term storage.
@@ -177,9 +182,10 @@ class LearningStore:
         self._path = Path(path) if path else None
         self._learnings_dir = Path(learnings_dir) if learnings_dir else None
         self._embedding_callback = embedding_callback or _default_embedding_callback
-        # Default to production AgentCore callback; tests must inject a stub.
-        # --- Production integration point ---
-        self._memory_callback = memory_callback or _production_memory_callback
+        # Defaults to a no-op so in-memory stores never touch the network.
+        # Pass memory_callback=_production_memory_callback to enable
+        # AgentCore Memory persistence.
+        self._memory_callback = memory_callback or _default_memory_callback
 
         # In-memory store: list of Learning objects
         self._learnings: list[Learning] = []

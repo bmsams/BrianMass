@@ -424,7 +424,7 @@ class DataClassifier:
         seen_spans: list[tuple[int, int]] = []
 
         for conf, start, end, category, subcategory, matched_text in candidates:
-            if any(s <= start < e or s < end <= e for s, e in seen_spans):
+            if any(start < e and end > s for s, e in seen_spans):
                 continue
             seen_spans.append((start, end))
             findings.append(

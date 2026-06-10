@@ -233,8 +233,13 @@ class CostGovernor:
         output_tokens: int,
         model_tier: ModelTier,
         cached_tokens: int = 0,
+        cache_write_tokens: int = 0,
     ) -> None:
         """Record token usage for *agent_id* and update its running cost.
+
+        ``cached_tokens`` are cache-read tokens (billed at the discounted
+        rate); ``cache_write_tokens`` are cache-creation tokens (billed at
+        the cache-write rate).
 
         Auto-registers the agent with a default budget if it has not been
         explicitly registered — this handles dispatched agents whose IDs are
@@ -244,6 +249,7 @@ class CostGovernor:
             input_tokens=input_tokens,
             output_tokens=output_tokens,
             cache_read_tokens=cached_tokens,
+            cache_write_tokens=cache_write_tokens,
             model_tier=model_tier,
         )
         with self._lock:

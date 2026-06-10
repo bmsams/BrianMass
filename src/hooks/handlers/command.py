@@ -262,7 +262,10 @@ class CommandHandler:
                 timeout=timeout,
             )
             stdout = stdout_bytes.decode() if stdout_bytes else ""
-            return _result_from_output(proc.returncode or 0, stdout, event)
+            # A missing returncode is a process error, not success —
+            # exit 1 routes to the fail-closed path for blocking events.
+            returncode = proc.returncode if proc.returncode is not None else 1
+            return _result_from_output(returncode, stdout, event)
 
         except TimeoutError:
             logger.error(
