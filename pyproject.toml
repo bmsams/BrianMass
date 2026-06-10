@@ -29,6 +29,9 @@ dev = [
     "mypy>=1.10",
 ]
 
+[project.scripts]
+brainmass = "src.cli:main"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
