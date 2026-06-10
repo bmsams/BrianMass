@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -62,7 +63,11 @@ class FileLockManager:
         lock_path = self._lock_path(filepath)
         existing = self._read_lock(lock_path)
 
-        if existing is not None:
+        if existing is None:
+            # A corrupt lock file reads as None but would still block the
+            # exclusive create below — clear it first.
+            self._delete_lock(lock_path)
+        else:
             # Already held by the same teammate — idempotent success
             if existing.teammate_id == teammate_id:
                 return True
@@ -86,13 +91,14 @@ class FileLockManager:
                 )
                 return False
 
-        # Create the lock
-        self._write_lock(lock_path, LockInfo(
+        # Create the lock atomically — O_EXCL guarantees a single winner
+        # when several teammates race for the same file (including after
+        # a stale lock was just broken).
+        return self._write_lock(lock_path, LockInfo(
             teammate_id=teammate_id,
             timestamp=time.time(),
             filepath=filepath,
         ))
-        return True
 
     def release_lock(self, filepath: str, teammate_id: str) -> bool:
         """Release the lock on *filepath* if held by *teammate_id*.
@@ -204,15 +210,26 @@ class FileLockManager:
             logger.warning("Corrupt lock file '%s': %s", lock_path, exc)
             return None
 
-    def _write_lock(self, lock_path: Path, info: LockInfo) -> None:
-        """Write a lock file as JSON."""
+    def _write_lock(self, lock_path: Path, info: LockInfo) -> bool:
+        """Atomically create a lock file as JSON.
+
+        Returns ``True`` if the lock file was created, ``False`` if another
+        teammate created it first (lost the race).
+        """
         lock_path.parent.mkdir(parents=True, exist_ok=True)
         data = {
             "teammate_id": info.teammate_id,
             "timestamp": info.timestamp,
             "filepath": info.filepath,
         }
-        lock_path.write_text(json.dumps(data), encoding="utf-8")
+        try:
+            fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            logger.debug("Lost lock race on '%s'", info.filepath)
+            return False
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(json.dumps(data))
+        return True
 
     def _delete_lock(self, lock_path: Path) -> None:
         """Delete a lock file if it exists."""

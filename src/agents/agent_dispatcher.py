@@ -36,6 +36,7 @@ from src.types.core import (
     AgentResult,
     BudgetStatus,
     HookContext,
+    HookDefinition,
     HookEvent,
     ModelTier,
 )
@@ -511,11 +512,26 @@ class AgentDispatcher:
             )
         elif self._hook_engine is not None and hasattr(self._hook_engine, "register_scoped"):
             # --- Production integration point ---
+            # register_scoped expects HookEvent keys; agent frontmatter
+            # hooks are keyed by event-name strings.
+            hooks_by_event: dict[HookEvent, list[HookDefinition]] = {}
+            for key_str, defs in ctx.agent_def.hooks.items():
+                try:
+                    event = HookEvent(key_str)
+                except ValueError:
+                    logger.warning(
+                        "Unknown hook event %r in agent %s",
+                        key_str,
+                        ctx.agent_def.name,
+                    )
+                    continue
+                hooks_by_event[event] = defs
+
             scope_id = ctx.agent_id
             self._hook_engine.register_scoped(  # type: ignore[union-attr]
                 scope_id=scope_id,
                 scope="subagent_frontmatter",
-                hooks=ctx.agent_def.hooks,
+                hooks=hooks_by_event,
             )
 
             def _cleanup() -> None:

@@ -493,7 +493,7 @@ class Orchestrator:
         if self._tracer is not None:
             self._tracer.record_effort_span(
                 effort_level=effort.level,
-                fast_mode=False,
+                fast_mode=getattr(effort, "fast_mode", False),
                 budget_tokens=effort.budget_tokens,
             )
         return response_text, usage, tool_calls

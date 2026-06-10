@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import threading
 import uuid
 from datetime import UTC, datetime
 from pathlib import Path
@@ -45,6 +46,7 @@ class Mailbox:
     def __init__(self, base_dir: str = ".brainmass/mailboxes") -> None:
         self._base_dir = Path(base_dir)
         self._seq: int = 0
+        self._seq_lock = threading.Lock()
 
     # ------------------------------------------------------------------
     # Public API
@@ -92,8 +94,9 @@ class Mailbox:
         inbox = self._inbox_path(recipient)
         inbox.mkdir(parents=True, exist_ok=True)
 
-        filename = self._message_filename(now, self._seq)
-        self._seq += 1
+        with self._seq_lock:
+            filename = self._message_filename(now, self._seq)
+            self._seq += 1
         filepath = inbox / filename
         filepath.write_text(
             json.dumps(self._serialize_message(message), indent=2),

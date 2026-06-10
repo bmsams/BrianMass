@@ -254,6 +254,8 @@ class WorkflowEngine:
                 return self._run_design(state, feature_request, artifact_dir)
             case WorkflowMode.SDLC:
                 return self._run_sdlc(state, feature_request, artifact_dir)
+            case _:
+                raise ValueError(f"Unknown workflow mode: {self._mode!r}")
 
     def run_graph(self, feature_request: str) -> WorkflowResult:
         """Execute the SDLC workflow using Strands GraphBuilder.

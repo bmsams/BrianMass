@@ -460,8 +460,8 @@ class BrainmassHookEngine(_StrandsHookProvider):  # type: ignore[misc]
                 if _matches(matcher, context.source):
                     matched.append(reg)
             else:
-                # Non-tool, non-source events: matcher applies to all
-                if _matches(matcher, None) or matcher is None or matcher == "*":
+                # Non-tool, non-source events: only wildcard/absent matchers apply
+                if _matches(matcher, None):
                     matched.append(reg)
 
         # Sort by scope precedence — highest-precedence scopes run FIRST

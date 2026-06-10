@@ -364,6 +364,16 @@ class SessionTeleporter:
         """
         payload = json.loads(blob.decode("utf-8"))
         raw = payload.get("state", payload)
+        required = {
+            "conversation_history", "tool_permissions", "active_workers",
+            "pending_approvals", "compaction_state", "context_manager_state",
+            "cost_tracking", "hook_registrations", "trace_id",
+        }
+        missing = required - set(raw)
+        if missing:
+            raise ValueError(
+                f"Malformed session blob: missing fields {sorted(missing)}"
+            )
         return SessionState(
             conversation_history=raw["conversation_history"],
             tool_permissions=raw["tool_permissions"],
