@@ -27,6 +27,7 @@ from src.types.core import (
     HookContext,
     HookEvent,
     HookResult,
+    ModelTier,
     TeamTask,
 )
 
@@ -40,7 +41,9 @@ logger = logging.getLogger(__name__)
 # Callback that executes a teammate's task and returns a raw result dict.
 TeammateCallback = Callable[
     [AgentDefinition, str, AgentBudget],
-    dict,  # {"summary": str, "tokens_consumed": dict, "tools_used": list, "files_modified": list, "exit_reason": str, "turns_used": int}
+    # {"summary": str, "tokens_consumed": dict, "tools_used": list,
+    #  "files_modified": list, "exit_reason": str, "turns_used": int}
+    dict,
 ]
 
 
@@ -658,8 +661,6 @@ class TeamManager:
     @staticmethod
     def _resolve_model_tier(model_alias: str) -> ModelTier:
         """Resolve a model alias string to a ModelTier enum."""
-        from src.types.core import ModelTier
-
         alias_map = {
             "opus": ModelTier.OPUS,
             "sonnet": ModelTier.SONNET,

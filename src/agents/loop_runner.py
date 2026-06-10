@@ -295,12 +295,12 @@ class LoopRunner:
             if prior_learnings:
                 extra = [
                     {
-                        "pattern": l.pattern,
-                        "resolution": l.resolution,
-                        "confidence": l.confidence,
-                        "source_iteration": l.source_iteration,
+                        "pattern": learning.pattern,
+                        "resolution": learning.resolution,
+                        "confidence": learning.confidence,
+                        "source_iteration": learning.source_iteration,
                     }
-                    for l in prior_learnings
+                    for learning in prior_learnings
                 ]
                 # Merge into a temporary context for context-string building only;
                 # the canonical LoopContext is updated after the iteration completes.
@@ -463,12 +463,12 @@ class LoopRunner:
         """
         new_learnings_dicts = [
             {
-                "pattern": l.pattern,
-                "resolution": l.resolution,
-                "confidence": l.confidence,
-                "source_iteration": l.source_iteration,
+                "pattern": learning.pattern,
+                "resolution": learning.resolution,
+                "confidence": learning.confidence,
+                "source_iteration": learning.source_iteration,
             }
-            for l in iteration_result.new_learnings
+            for learning in iteration_result.new_learnings
         ]
 
         merged_learnings = list(context.learnings) + new_learnings_dicts

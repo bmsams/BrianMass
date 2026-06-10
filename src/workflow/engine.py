@@ -23,13 +23,14 @@ import json
 import logging
 import uuid
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from src.types.core import AgentDefinition
 from src.types.workflow import (
+    SDLC_PHASE_ORDER,
     GateDecision,
     GateResult,
     TraceabilityMatrix,
@@ -37,7 +38,6 @@ from src.types.workflow import (
     WorkflowMode,
     WorkflowPhase,
     WorkflowState,
-    SDLC_PHASE_ORDER,
 )
 
 logger = logging.getLogger(__name__)

@@ -366,7 +366,7 @@ class TestPluggableCallbacks:
             model_callback=_model_cb,
             tool_executor=_custom_tool,
         )
-        result = orch.process_request("use my tool")
+        orch.process_request("use my tool")
         assert len(calls) == 1
         assert calls[0][0] == "my_tool"
 
@@ -391,7 +391,7 @@ class TestUserPromptSubmitModification:
         he = BrainmassHookEngine()
         he.fire = _modify_fire  # type: ignore[assignment]
         orch = _make_orchestrator(hook_engine=he, model_callback=_model_cb)
-        result = orch.process_request("original prompt")
+        orch.process_request("original prompt")
 
         assert prompts_seen[0] == "modified prompt"
 

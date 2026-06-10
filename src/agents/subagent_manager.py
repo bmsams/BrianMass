@@ -27,6 +27,7 @@ from src.types.core import (
     HookDefinition,
     HookEvent,
     HookResult,
+    ModelTier,
 )
 
 logger = logging.getLogger(__name__)
@@ -36,10 +37,13 @@ logger = logging.getLogger(__name__)
 # Type aliases for pluggable callbacks
 # ---------------------------------------------------------------------------
 
-# Callback that executes a subagent task and returns (summary, tokens_consumed, tools_used, files_modified, exit_reason).
+# Callback that executes a subagent task and returns a result dict
+# (summary, tokens_consumed, tools_used, files_modified, exit_reason).
 AgentCallback = Callable[
     [AgentDefinition, str, AgentBudget],
-    dict,  # {"summary": str, "tokens_consumed": dict, "tools_used": list, "files_modified": list, "exit_reason": str, "turns_used": int}
+    # {"summary": str, "tokens_consumed": dict, "tools_used": list,
+    #  "files_modified": list, "exit_reason": str, "turns_used": int}
+    dict,
 ]
 
 # Callback that wraps an agent definition as a tool descriptor dict.
@@ -387,8 +391,6 @@ class SubagentManager:
     @staticmethod
     def _resolve_model_tier(model_alias: str) -> ModelTier:
         """Resolve a model alias string to a ModelTier enum."""
-        from src.types.core import ModelTier
-
         alias_map = {
             "opus": ModelTier.OPUS,
             "sonnet": ModelTier.SONNET,

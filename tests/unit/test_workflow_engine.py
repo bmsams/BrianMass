@@ -20,18 +20,14 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import pytest
-
 from src.types.core import AgentDefinition
 from src.types.workflow import (
     GateDecision,
     GateResult,
-    TraceabilityRow,
     WorkflowMode,
     WorkflowPhase,
 )
 from src.workflow.engine import (
-    DEFAULT_WORKFLOW_DIR,
     PHASE_AGENT_MAP,
     PHASE_ARTIFACT_NAMES,
     WorkflowEngine,
@@ -39,7 +35,6 @@ from src.workflow.engine import (
     _default_approval_callback,
     _default_phase_callback,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -150,7 +145,7 @@ class TestVibeMode:
             mode=WorkflowMode.VIBE,
             workflow_dir=str(tmp_path),
         )
-        result = engine.run("fix bug")
+        engine.run("fix bug")
 
         # Find state.json in the workflow dir
         state_files = list(tmp_path.rglob("state.json"))
@@ -236,7 +231,7 @@ class TestSDLCMode:
             approval_callback=gate_cb,
             workflow_dir=str(tmp_path),
         )
-        result = engine.run("add MFA")
+        engine.run("add MFA")
 
         # 5 phases = 5 gate calls
         assert len(gate_cb.calls) == 5
@@ -278,7 +273,7 @@ class TestSDLCMode:
             mode=WorkflowMode.SDLC,
             workflow_dir=str(tmp_path),
         )
-        result = engine.run("feature")
+        engine.run("feature")
 
         artifact_dir = list(tmp_path.iterdir())[0]
         files = {f.name for f in artifact_dir.iterdir()}
@@ -314,7 +309,7 @@ class TestApprovalGates:
             approval_callback=gate_cb,
             workflow_dir=str(tmp_path),
         )
-        result = engine.run("feature")
+        engine.run("feature")
 
         # First phase ran twice (initial + retry), rest ran once each = 6 total
         assert len(cb.calls) == 6
@@ -419,7 +414,7 @@ class TestTraceability:
             mode=WorkflowMode.SDLC,
             workflow_dir=str(tmp_path),
         )
-        result = engine.run("feature")
+        engine.run("feature")
 
         matrix_files = list(tmp_path.rglob("traceability-matrix.md"))
         assert len(matrix_files) == 1
@@ -465,7 +460,7 @@ class TestAgentResolution:
             agent_registry=registry,
             workflow_dir=str(tmp_path),
         )
-        result = engine.run("fix")
+        engine.run("fix")
 
         registry.get.assert_called_with("sdlc-coder")
 

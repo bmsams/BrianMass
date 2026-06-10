@@ -16,11 +16,10 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from itertools import combinations
-from typing import Callable
-
 
 _TOKEN_RE = re.compile(r"[a-z0-9_]+")
 _COMPLETION_CLAIM_RE = re.compile(
@@ -80,7 +79,7 @@ class HardEvalCase:
     weight: float = 1.0
 
     @staticmethod
-    def from_dict(raw: dict) -> "HardEvalCase":
+    def from_dict(raw: dict) -> HardEvalCase:
         return HardEvalCase(
             case_id=str(raw["case_id"]),
             prompt=str(raw["prompt"]),
@@ -108,7 +107,7 @@ class HardEvalObservation:
     evidence: list[str] = field(default_factory=list)
 
     @staticmethod
-    def from_dict(raw: dict) -> "HardEvalObservation":
+    def from_dict(raw: dict) -> HardEvalObservation:
         return HardEvalObservation(
             case_id=str(raw["case_id"]),
             variant_id=str(raw["variant_id"]),
@@ -378,7 +377,7 @@ class HardEvalSuite:
                 pass_count=0,
                 fail_count=0,
                 total_cases=0,
-                timestamp=datetime.now(timezone.utc).isoformat(),
+                timestamp=datetime.now(UTC).isoformat(),
                 case_results=[],
             )
 
@@ -399,7 +398,7 @@ class HardEvalSuite:
             pass_count=pass_count,
             fail_count=fail_count,
             total_cases=len(case_results),
-            timestamp=datetime.now(timezone.utc).isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
             case_results=case_results,
         )
 
@@ -663,7 +662,7 @@ def default_hard_cases() -> list[HardEvalCase]:
 
 def load_hard_eval_input(path: str) -> tuple[list[HardEvalCase], dict[str, list[HardEvalObservation]]]:
     """Load cases and observations from JSON for offline hard-eval scoring."""
-    raw = json.loads(open(path, "r", encoding="utf-8").read())
+    raw = json.loads(open(path, encoding="utf-8").read())
     cases = [HardEvalCase.from_dict(case) for case in raw.get("cases", [])]
     obs_by_case: dict[str, list[HardEvalObservation]] = {}
     for case_id, rows in raw.get("observations", {}).items():

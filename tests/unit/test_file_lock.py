@@ -168,7 +168,7 @@ class TestGetAllLocks:
         mgr.acquire_lock("b.py", "agent-2")
         locks = mgr.get_all_locks()
         assert len(locks) == 2
-        ids = {l.teammate_id for l in locks}
+        ids = {info.teammate_id for info in locks}
         assert ids == {"agent-1", "agent-2"}
 
     def test_empty_when_no_locks(self, mgr: FileLockManager):

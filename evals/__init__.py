@@ -1,6 +1,7 @@
 """Evaluation suite for Brainmass v3."""
 
 from evals.eval_suite import ActorSimulator, BrainmassEvalSuite, EvalResult
+from evals.hard_eval_runtime import OrchestratorHardEvalRunner
 from evals.hard_eval_suite import (
     HardCaseResult,
     HardCheckResult,
@@ -12,7 +13,6 @@ from evals.hard_eval_suite import (
     default_hard_cases,
     load_hard_eval_input,
 )
-from evals.hard_eval_runtime import OrchestratorHardEvalRunner
 
 __all__ = [
     "ActorSimulator",

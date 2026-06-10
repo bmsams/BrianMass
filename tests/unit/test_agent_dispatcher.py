@@ -149,7 +149,6 @@ class TestBasicDispatch:
 
 class TestModelResolution:
     def test_sonnet_resolved(self) -> None:
-        received = {}
 
         def capture(agent_def, task, system_prompt, budget):
             return _success_loop(agent_def, task, system_prompt, budget)
@@ -159,7 +158,6 @@ class TestModelResolution:
         # No error means resolution succeeded
 
     def test_inherit_uses_parent_model(self) -> None:
-        received_model = {}
 
         def capture(agent_def, task, system_prompt, budget):
             return _success_loop(agent_def, task, system_prompt, budget)

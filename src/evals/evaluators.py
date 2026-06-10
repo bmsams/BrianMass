@@ -17,7 +17,6 @@ import re
 from dataclasses import dataclass, field
 from enum import Enum
 
-
 # ---------------------------------------------------------------------------
 # Evaluation result types (standalone — no SDK dependency required)
 # ---------------------------------------------------------------------------

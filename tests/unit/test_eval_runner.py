@@ -14,8 +14,6 @@ from __future__ import annotations
 
 import json
 
-import pytest
-
 from src.evals.cases import (
     ALL_CASES,
     CODER_CASES,
@@ -27,8 +25,8 @@ from src.evals.cases import (
     EvalCase,
 )
 from src.evals.runner import (
-    PHASE_EVALUATOR_MAP,
     PHASE_CASES_MAP,
+    PHASE_EVALUATOR_MAP,
     EvalReport,
     PhaseReport,
     _get_phase_rubric,
@@ -36,7 +34,6 @@ from src.evals.runner import (
     run_phase_evaluations,
     validate_output_patterns,
 )
-
 
 # ==========================================================================
 # Case data integrity
@@ -184,9 +181,9 @@ class TestRunPhaseEvaluations:
 
         def callback(agent_name: str, task: str, context: dict) -> str:
             calls.append(agent_name)
-            return f"EARS-001 [MUST] The system shall do things. AC-001.1: test within 5 seconds"
+            return "EARS-001 [MUST] The system shall do things. AC-001.1: test within 5 seconds"
 
-        report = run_phase_evaluations("ears_spec", agent_callback=callback)
+        run_phase_evaluations("ears_spec", agent_callback=callback)
         assert len(calls) == len(EARS_SPEC_CASES)
         assert all("ears" in c for c in calls)
 

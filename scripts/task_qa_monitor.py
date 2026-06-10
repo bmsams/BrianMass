@@ -14,9 +14,8 @@ import subprocess
 import sys
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Optional
 
 ROOT = Path(__file__).resolve().parents[1]
 TASKS_PATH = ROOT / ".kiro" / "specs" / "claude-code-v3-enterprise" / "tasks.md"
@@ -235,7 +234,7 @@ def run_once(verbose: bool = True, recheck_all: bool = False) -> None:
             qa_results.append(qa_task(row))
 
     run_data = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "new_completed": new_completed,
         "qa_results": qa_results,
     }
